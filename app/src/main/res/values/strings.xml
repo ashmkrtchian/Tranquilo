@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Tranquilo</string>
+    <string name="tranquilo">Tranquilo</string>
+    <string name="relax_your_mind">Relax Your Mind</string>
+    <string name="find_your_calm_space">Find Your Calm Space</string>
+    <string name="explore_relaxing_sounds_journaling_and_mindfulness_tools_designed_just_for_you">Explore relaxing sounds, journaling, and mindfulness tools designed just for you.</string>
+    <string name="take_a_deep_breath_and_start_guided_breathing_exercises_to_reduce_stress_and_calm_your_thoughts">Take a deep breath and start guided breathing exercises to reduce stress and calm your thoughts.</string>
+    <string name="track_your_mood">Track Your Mood</string>
+    <string name="log_how_you_feel_every_day_and_discover_patterns_that_affect_your_mental_well_being">Log how you feel every day and discover patterns that affect your mental well-being.</string>
+    <string name="get_started">Get Started</string>
+    <string name="login">Login</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+</resources>
