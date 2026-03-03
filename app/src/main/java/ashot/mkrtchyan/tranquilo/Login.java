@@ -34,11 +34,27 @@ public class Login extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent i = new Intent(getApplicationContext(), Home.class);
-            startActivity(i);
-            finish();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser != null) {
+
+            currentUser.reload();
+
+            if (currentUser.isEmailVerified()) {
+
+                Intent i = new Intent(getApplicationContext(), Home.class);
+                startActivity(i);
+                finish();
+
+            } else {
+
+                Toast.makeText(this,
+                        "Please verify your email first.",
+                        Toast.LENGTH_LONG).show();
+
+                FirebaseAuth.getInstance().signOut();
+            }
         }
     }
     @Override
@@ -71,10 +87,12 @@ public class Login extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Login.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (TextUtils.isEmpty(password)){
                     Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
@@ -84,11 +102,26 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    user.reload();
+
+                                    if (!user.isEmailVerified()) {
+
+                                        Toast.makeText(Login.this,
+                                                "Please verify your email first.",
+                                                Toast.LENGTH_LONG).show();
+
+                                        mAuth.signOut();
+                                        return;
+                                    }
+
                                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
                                     Intent i = new Intent(getApplicationContext(), Home.class);
                                     startActivity(i);
                                     finish();
-                                } else {
+                                }else {
                                     Toast.makeText(Login.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }

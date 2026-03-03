@@ -72,10 +72,12 @@ public class Register extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (TextUtils.isEmpty(password)){
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
@@ -85,11 +87,34 @@ public class Register extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(Register.this, "Account created.",
-                                            Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(getApplicationContext(), Login.class);
-                                    startActivity(i);
-                                    finish();
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
+                                    user.sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                    if (task.isSuccessful()) {
+
+                                                        Toast.makeText(Register.this,
+                                                                "Verification email sent. Please check your email.",
+                                                                Toast.LENGTH_LONG).show();
+
+                                                        mAuth.signOut();
+
+                                                        Intent i = new Intent(getApplicationContext(), Login.class);
+                                                        startActivity(i);
+                                                        finish();
+
+                                                    } else {
+
+                                                        Toast.makeText(Register.this,
+                                                                "Failed to send verification email.",
+                                                                Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Toast.makeText(Register.this, "Authentication failed.",

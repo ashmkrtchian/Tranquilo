@@ -13,7 +13,8 @@
         android:textSize="30sp"
         android:gravity="center"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/darkGreen"/>
 x
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -44,6 +45,9 @@ x
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:backgroundTint="@color/darkGreen"
+        android:layout_margin="20dp"
         android:text="@string/login"/>
 
     <TextView
@@ -53,6 +57,7 @@ x
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:gravity="center"
+        android:textColor="@color/darkGreen"
         android:layout_marginTop="20dp"
         android:textStyle="bold"/>
 
