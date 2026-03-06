@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tranquilo">
         <activity
+            android:name=".Rain"
+            android:exported="false" />
+        <activity
+            android:name=".Music"
+            android:exported="false" />
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity
