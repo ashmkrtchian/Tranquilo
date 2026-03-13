@@ -101,7 +101,16 @@ public class Rain extends AppCompatActivity {
             }
         }).start();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {

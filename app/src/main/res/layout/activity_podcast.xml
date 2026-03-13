@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEFAE0">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/podcastTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Podcast of the Day"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#283618"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/podcastCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#DDA15E"
+            android:padding="20dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical"
+            android:elevation="4dp">
+
+            <TextView
+                android:id="@+id/podcastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Podcast Name"
+                android:textSize="20sp"
+                android:textColor="#283618"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/listenButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Listen on YouTube"
+                android:textColor="#FEFAE0"
+                android:textStyle="bold"
+                android:background="#283618"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Famous Podcasts"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#283618"
+            android:layout_marginBottom="15dp"/>
+
+        <!-- Famous podcasts list -->
+        <LinearLayout
+            android:id="@+id/famousPodcastsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="?android:dividerHorizontal"
+            android:showDividers="middle">
+
+            <!-- Individual podcast items will be added programmatically -->
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

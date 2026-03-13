@@ -15,6 +15,7 @@ public class Music extends AppCompatActivity {
 
 
     FrameLayout rainCard;
+    FrameLayout oceanCard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,33 @@ public class Music extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), Rain.class);
+                startActivity(i);
+            }
+        });
+
+        oceanCard = findViewById(R.id.oceanCard);
+        oceanCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Ocean.class);
+                startActivity(i);
+            }
+        });
+
+        FrameLayout fireCard = findViewById(R.id.fireCard);
+        fireCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Fire.class);
+                startActivity(i);
+            }
+        });
+
+        FrameLayout classicalCard = findViewById(R.id.classicalCard);
+        classicalCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Classical.class);
                 startActivity(i);
             }
         });

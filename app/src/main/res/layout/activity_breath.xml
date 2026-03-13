@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEFAE0"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4-7-8 Breathing"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/darkGreen"
+        android:layout_marginBottom="40dp"/>
+
+    <View
+        android:id="@+id/breathBall"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/breath_ball"
+        android:layout_marginVertical="50dp"
+        />
+
+    <TextView
+        android:id="@+id/breathState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ready"
+        android:textSize="22sp"
+        android:textColor="@color/darkGreen"
+        android:layout_marginBottom="30dp"/>
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:text="START"
+        android:textColor="@color/milk"
+        android:backgroundTint="@color/lightGreen"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp"/>
+
+    <LinearLayout
+        android:id="@+id/quoteCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGreen"
+        android:padding="20dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/quoteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quote goes here"
+            android:textSize="16sp"
+            android:textColor="@color/milk"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>

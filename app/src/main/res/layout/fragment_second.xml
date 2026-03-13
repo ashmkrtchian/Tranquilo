@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/podcast"
             android:textSize="25sp"
             android:layout_width="0dp"
             android:layout_height="150dp"
@@ -70,6 +71,7 @@
             android:textColor="@color/milk"
             android:gravity="center"/>
         <TextView
+            android:id="@+id/breath"
             android:textSize="25sp"
             android:layout_width="0dp"
             android:layout_height="150dp"

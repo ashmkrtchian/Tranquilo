@@ -12,7 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tranquilo">
         <activity
+            android:name=".Podcast"
+            android:exported="false" />
+        <activity
+            android:name=".Breath"
+            android:exported="false" />
+        <activity
+            android:name=".Walking"
+            android:exported="false" />
+        <activity
+            android:name=".Classical"
+            android:exported="false" />
+        <activity
+            android:name=".Fire"
+            android:exported="false" />
+        <activity
+            android:name=".Ocean"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
+        <activity
             android:name=".Rain"
+            android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".Music"

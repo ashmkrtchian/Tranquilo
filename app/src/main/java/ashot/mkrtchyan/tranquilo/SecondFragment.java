@@ -27,7 +27,7 @@ public class SecondFragment extends Fragment {
     private String mParam2;
 
 
-    TextView music;
+    TextView music, breath, podcast;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -70,6 +70,24 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), Music.class);
+                startActivity(i);
+            }
+        });
+
+        podcast = view.findViewById(R.id.podcast);
+        podcast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), Podcast.class);
+                startActivity(i);
+            }
+        });
+
+        breath = view.findViewById(R.id.breath);
+        breath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), Breath.class);
                 startActivity(i);
             }
         });
