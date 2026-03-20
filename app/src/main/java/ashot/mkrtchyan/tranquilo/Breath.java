@@ -1,5 +1,6 @@
 package ashot.mkrtchyan.tranquilo;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -28,9 +29,38 @@ public class Breath extends AppCompatActivity {
     int randomIndex = (int) (Math.random() * quotes.length);
 
     boolean running = false;
+    MediaPlayer inhaleSound,exhaleSound,holdSound;
 
+    MediaPlayer rainSound, oceanSound, fireSound, forestSound;
+    MediaPlayer currentBGSound = null;
+    int currentBGSoundId = -1;
     Handler handler = new Handler();
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopAllSounds();
+        running = false;
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (inhaleSound != null) {
+            inhaleSound.release();
+            inhaleSound = null;
+        }
+
+        if (exhaleSound != null) {
+            exhaleSound.release();
+            exhaleSound = null;
+        }
+
+        if (currentBGSound != null) {
+            currentBGSound.release();
+            currentBGSound = null;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +70,9 @@ public class Breath extends AppCompatActivity {
         state = findViewById(R.id.breathState);
         button = findViewById(R.id.startButton);
 
+        inhaleSound = MediaPlayer.create(this, R.raw.inhale);
+        exhaleSound = MediaPlayer.create(this, R.raw.exhale);
+        holdSound = MediaPlayer.create(this, R.raw.hold);
         quoteText = findViewById(R.id.quoteText);
         quoteText.setText(quotes[randomIndex]);
 
@@ -53,16 +86,60 @@ public class Breath extends AppCompatActivity {
                 running = false;
                 button.setText("START");
                 state.setText("Ready");
+
+                if (inhaleSound.isPlaying()) inhaleSound.pause();
+                if (exhaleSound.isPlaying()) exhaleSound.pause();
+                if (holdSound.isPlaying()) holdSound.pause();
+
+                inhaleSound.seekTo(0);
+                exhaleSound.seekTo(0);
+                holdSound.seekTo(0);
             }
 
         });
+        rainSound = MediaPlayer.create(this, R.raw.rainsound);
+        oceanSound = MediaPlayer.create(this, R.raw.ocean);
+        fireSound = MediaPlayer.create(this, R.raw.fire);
+        forestSound = MediaPlayer.create(this, R.raw.forest);
+
+        rainSound.setLooping(true);
+        oceanSound.setLooping(true);
+        fireSound.setLooping(true);
+        forestSound.setLooping(true);
+
+        findViewById(R.id.rainBtn).setOnClickListener(v -> toggleBGSound(R.raw.rainsound));
+        findViewById(R.id.oceanBtn).setOnClickListener(v -> toggleBGSound(R.raw.ocean));
+        findViewById(R.id.fireBtn).setOnClickListener(v -> toggleBGSound(R.raw.fire));
+        findViewById(R.id.forestBtn).setOnClickListener(v -> toggleBGSound(R.raw.forest));
 
     }
 
+    private void toggleBGSound(int soundResId) {
+        if (currentBGSoundId == soundResId) {
+            if (currentBGSound != null && currentBGSound.isPlaying()) {
+                currentBGSound.pause();
+                currentBGSound.seekTo(0);
+            }
+            currentBGSound = null;
+            currentBGSoundId = -1;
+            return;
+        }
+
+        if (currentBGSound != null && currentBGSound.isPlaying()) {
+            currentBGSound.pause();
+            currentBGSound.seekTo(0);
+        }
+
+        currentBGSound = MediaPlayer.create(this, soundResId);
+        currentBGSound.setVolume(0.1f, 0.1f);
+        currentBGSound.setLooping(true);
+        currentBGSound.start();
+        currentBGSoundId = soundResId;
+    }
     private void startBreathing(){
 
         if(!running) return;
-
+        inhaleSound.start();
         state.setText("Inhale");
 
         animateBall(1f,1.5f,4000);
@@ -70,7 +147,7 @@ public class Breath extends AppCompatActivity {
         handler.postDelayed(() -> {
 
             if(!running) return;
-
+            holdSound.start();
             state.setText("Hold");
 
         },4000);
@@ -78,7 +155,7 @@ public class Breath extends AppCompatActivity {
         handler.postDelayed(() -> {
 
             if(!running) return;
-
+            exhaleSound.start();
             state.setText("Exhale");
 
             animateBall(1.5f,1f,8000);
@@ -102,5 +179,29 @@ public class Breath extends AppCompatActivity {
         anim.setFillAfter(true);
 
         ball.startAnimation(anim);
+    }
+    private void stopAllSounds() {
+
+
+        if (inhaleSound != null) {
+            if (inhaleSound.isPlaying()) inhaleSound.pause();
+            inhaleSound.seekTo(0);
+        }
+
+        if (exhaleSound != null) {
+            if (exhaleSound.isPlaying()) exhaleSound.pause();
+            exhaleSound.seekTo(0);
+        }
+
+        if (holdSound != null) {
+            if (holdSound.isPlaying()) holdSound.pause();
+            holdSound.seekTo(0);
+        }
+
+
+        if (currentBGSound != null) {
+            if (currentBGSound.isPlaying()) currentBGSound.pause();
+            currentBGSound.seekTo(0);
+        }
     }
 }

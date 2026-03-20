@@ -21,7 +21,6 @@ import androidx.core.view.WindowInsetsCompat;
 public class Rain extends AppCompatActivity {
 
 
-//    Button btnPlay;
     ImageButton btnPlay;
     SeekBar seekBarPosition, volumeBar;
     TextView elapsedTimeView, remainingTimeView;

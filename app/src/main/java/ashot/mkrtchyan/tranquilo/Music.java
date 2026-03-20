@@ -56,5 +56,16 @@ public class Music extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        FrameLayout forestCard = findViewById(R.id.forestCard);
+        forestCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Forest.class);
+                startActivity(i);
+            }
+        });
+
+
     }
 }

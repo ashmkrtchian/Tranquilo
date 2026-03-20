@@ -41,13 +41,7 @@
             android:textSize="15sp"
             android:layout_marginLeft="240dp"/>
     </LinearLayout>
-<!--    <Button-->
-<!--        android:id="@+id/btnPlay"-->
-<!--        android:layout_width="60dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:background="@drawable/play"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:onClick="setBtnPlay"/>-->
+
     <ImageButton
         android:id="@+id/btnPlay"
         android:layout_width="60dp"
