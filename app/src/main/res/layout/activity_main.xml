@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/milk"
+    android:fitsSystemWindows="true"
     android:padding="40dp"
     android:gravity="center">
     <TextView
@@ -13,8 +14,7 @@
         android:text="@string/tranquilo"
         android:textSize="40sp"
         android:textColor="@color/darkGreen"
-        android:textStyle="bold"
-        android:layout_marginTop="30dp"/>
+        android:textStyle="bold"/>
     <ViewFlipper
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -51,7 +51,7 @@
                 android:layout_weight="1"
                 android:text="@string/take_a_deep_breath_and_start_guided_breathing_exercises_to_reduce_stress_and_calm_your_thoughts"
                 android:padding="16dp"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
                 android:gravity="center"/>
@@ -85,7 +85,7 @@
                 android:layout_weight="1"
                 android:text="@string/log_how_you_feel_every_day_and_discover_patterns_that_affect_your_mental_well_being"
                 android:padding="16dp"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
                 android:gravity="center"/>
@@ -121,7 +121,7 @@
                 android:layout_weight="1"
                 android:text="@string/explore_relaxing_sounds_journaling_and_mindfulness_tools_designed_just_for_you"
                 android:padding="16dp"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
                 android:gravity="center"/>
@@ -134,6 +134,7 @@
         android:text="@string/get_started"
         android:textSize="25sp"
         android:backgroundTint="@color/darkGreen"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>

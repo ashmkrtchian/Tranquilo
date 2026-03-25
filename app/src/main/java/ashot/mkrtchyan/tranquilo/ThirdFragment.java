@@ -28,7 +28,7 @@ public class ThirdFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Button button;
+    View rowLogout;
     public ThirdFragment() {
         // Required empty public constructor
     }
@@ -60,9 +60,9 @@ public class ThirdFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_third, container, false);
 
-        button = view.findViewById(R.id.button);
+        rowLogout = view.findViewById(R.id.rowLogout);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        rowLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();

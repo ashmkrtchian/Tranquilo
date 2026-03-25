@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,22 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tranquilo">
         <activity
-            android:name=".Forest"
+            android:name=".itemClassicalTrack"
             android:exported="false" />
         <activity
-            android:name=".WorksActivity"
+            android:name=".Forest"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".WorksActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Podcast"
             android:exported="false" />
+        <activity android:name=".ClassicalMusicActivity" />
         <activity
             android:name=".Breath"
             android:exported="false" />
         <activity
             android:name=".Walking"
-            android:exported="false" />
-        <activity
-            android:name=".Classical"
             android:exported="false" />
         <activity
             android:name=".Fire"

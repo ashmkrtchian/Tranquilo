@@ -52,8 +52,12 @@ public class Music extends AppCompatActivity {
         classicalCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), Classical.class);
+                Intent i = new Intent(getApplicationContext(), ClassicalMusicActivity.class);
                 startActivity(i);
+//                Intent i = new Intent(getApplicationContext(), Classical.class);
+//                startActivity(i);
+
+//                startActivity(new Intent(this, ClassicalMusicActivity.class));
             }
         });
 
