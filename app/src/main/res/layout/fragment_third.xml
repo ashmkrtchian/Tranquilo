@@ -13,7 +13,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:background="@color/darkGreen">
 
             <!-- Settings Button -->
@@ -30,18 +30,13 @@
                 android:id="@+id/imgAvatar"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="-48dp"
+                android:layout_gravity="center"
                 android:src="@drawable/rain"
                 app:civ_border_color="@color/milk"
                 app:civ_border_width="3dp" />
 
         </FrameLayout>
 
-        <!-- White space for avatar overlap -->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="56dp" />
 
         <!-- Name & Title -->
         <LinearLayout
@@ -59,6 +54,7 @@
                 android:textColor="@color/darkGreen"
                 android:textSize="26sp"
                 android:textStyle="bold"
+                android:layout_marginTop="20dp"
                 android:fontFamily="serif" />
 
             <TextView
@@ -101,36 +97,6 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="20dp">
 
-            <!-- Stat: Sessions -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="142"
-                    android:textColor="@color/caramel"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:fontFamily="serif" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sessions"
-                    android:textColor="@color/lightGreen"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <!-- Divider -->
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40dp"
-                android:background="#30283618" />
 
             <!-- Stat: Streak -->
             <LinearLayout
@@ -143,7 +109,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="21"
+                    android:text="0"
                     android:textColor="@color/caramel"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -172,9 +138,10 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tvCalmCoins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="38h"
+                    android:text="0"
                     android:textColor="@color/caramel"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -183,7 +150,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Time"
+                    android:text="CalmCoins"
                     android:textColor="@color/lightGreen"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -457,7 +424,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ocean" />
+                    android:src="@drawable/bell" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -468,10 +435,6 @@
                     android:textColor="@color/darkGreen"
                     android:textSize="15sp" />
 
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/forest"/>
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#15283618" />
@@ -488,7 +451,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/forest"/>
+                    android:src="@drawable/insurance"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -498,16 +461,10 @@
                     android:text="Privacy"
                     android:textColor="@color/darkGreen"
                     android:textSize="15sp" />
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/forest"/>
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#15283618" />
 
-            <!-- Logout Row -->
             <LinearLayout
                 android:id="@+id/rowLogout"
                 android:layout_width="match_parent"
@@ -519,7 +476,7 @@
                 <ImageView
                     android:layout_width="29dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/forest" />
+                    android:src="@drawable/logouticon" />
 
                 <TextView
                     android:layout_width="0dp"

@@ -52,6 +52,8 @@ public class ThirdFragment extends Fragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,7 @@ public class ThirdFragment extends Fragment {
         TextView tvName = view.findViewById(R.id.tvName);
         TextView tvSchulteBest = view.findViewById(R.id.tvSchulteBest);
 
+        TextView tvCalmCoins = view.findViewById(R.id.tvCalmCoins);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             FirebaseFirestore.getInstance()
@@ -100,13 +103,18 @@ public class ThirdFragment extends Fragment {
                                 tvName.setText(name);
                             }
 
-                            // քո արդեն եղած score-ը
                             if (snapshot.contains("schulte_best_seconds")) {
                                 Long best = snapshot.getLong("schulte_best_seconds");
                                 if (best != null) {
                                     String formatted = String.format(Locale.getDefault(),
                                             "%02d:%02d", best / 60, best % 60);
                                     tvSchulteBest.setText(formatted);
+                                }
+                            }
+                            if (snapshot.contains("calmCoins")) {
+                                Long coins = snapshot.getLong("calmCoins");
+                                if (coins != null) {
+                                    tvCalmCoins.setText(coins.toString());
                                 }
                             }
                         }

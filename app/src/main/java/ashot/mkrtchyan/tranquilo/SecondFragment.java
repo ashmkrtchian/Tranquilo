@@ -3,11 +3,13 @@ package ashot.mkrtchyan.tranquilo;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -27,7 +29,9 @@ public class SecondFragment extends Fragment {
     private String mParam2;
 
 
-    TextView music, breath, podcast, schulteTable;
+//    TextView breath, podcast, schulteTable;
+//    LinearLayout music;
+    CardView breath, podcast, schulteTable, music, walking;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -100,6 +104,16 @@ public class SecondFragment extends Fragment {
                 startActivity(i);
             }
         });
+
+        walking = view.findViewById(R.id.walking);
+        walking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), WalkingActivity.class);
+                startActivity(i);
+            }
+        });
+
         return view;
     }
 }

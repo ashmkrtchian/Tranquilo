@@ -22,6 +22,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -260,6 +261,7 @@ public class SchulteTableActivity extends AppCompatActivity {
                 "🎉 Completed in %02d:%02d!", mins, secs);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         saveBestScore(elapsedSeconds);
+        addCalmCoins(10);
     }
 
     private void saveBestScore(long completedSeconds) {
@@ -311,6 +313,33 @@ public class SchulteTableActivity extends AppCompatActivity {
         return Math.round(dp * density);
     }
 
+    private void addCalmCoins(int coinsToAdd) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        String uid = user.getUid();
+        DocumentReference userRef = db.collection("users").document(uid);
+
+        db.runTransaction(transaction -> {
+            DocumentSnapshot snapshot = transaction.get(userRef);
+
+            long currentCoins = 0;
+            if (snapshot.exists() && snapshot.contains("calmCoins")) {
+                Long coins = snapshot.getLong("calmCoins");
+                if (coins != null) currentCoins = coins;
+            }
+
+            long newCoins = currentCoins + coinsToAdd;
+
+            transaction.update(userRef, "calmCoins", newCoins);
+
+            return null;
+        }).addOnSuccessListener(aVoid ->
+                Toast.makeText(this, "🪙 +"+coinsToAdd+" CalmCoins earned!", Toast.LENGTH_SHORT).show()
+        ).addOnFailureListener(e ->
+                Toast.makeText(this, "Error adding coins", Toast.LENGTH_SHORT).show()
+        );
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

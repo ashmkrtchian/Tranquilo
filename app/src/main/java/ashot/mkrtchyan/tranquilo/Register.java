@@ -108,6 +108,7 @@ public class Register extends AppCompatActivity {
                                     Map<String, Object> userData = new HashMap<>();
                                     userData.put("name", name);
                                     userData.put("email", emailText);
+                                    userData.put("calmCoins", 0);
 
                                     FirebaseFirestore.getInstance()
                                             .collection("users")
