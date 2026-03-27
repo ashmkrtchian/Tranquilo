@@ -56,7 +56,7 @@ public class Home extends AppCompatActivity {
         navMood.setOnClickListener(v -> {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new FirstFragment())
+                    .replace(R.id.fragment_container, new LeaderboardFragment())
                     .commit();
         });
 

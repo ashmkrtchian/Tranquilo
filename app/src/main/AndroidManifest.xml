@@ -17,10 +17,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tranquilo">
+        <activity
+            android:name=".LeaderboardActivity"
+            android:exported="false" />
+
         <service
             android:name=".StepService"
-            android:foregroundServiceType="health"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="health" />
+
         <activity
             android:name=".SchulteTableActivity"
             android:exported="false" />
