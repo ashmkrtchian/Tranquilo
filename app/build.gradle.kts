@@ -48,4 +48,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.android.volley:volley:1.2.1")
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.google.firebase:firebase-firestore:25.1.4")
 }

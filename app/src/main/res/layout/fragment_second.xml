@@ -6,10 +6,36 @@
     tools:context=".SecondFragment"
     android:background="@color/milk"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tranquilo"
+            android:textSize="32sp"
+            android:textColor="#2C2820"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="what will you explore today?"
+            android:textSize="13sp"
+            android:textColor="#9B958D"
+            android:layout_marginTop="2dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/music"
             android:layout_width="0dp"
@@ -36,13 +62,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/schulteTable"
             android:textSize="25sp"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:background="@color/lightBrown"
             android:layout_weight="1"
             android:layout_margin="10dp"
-            android:text="Sleep"
+            android:text="Schulte Table"
             android:textColor="@color/milk"
             android:gravity="center"/>
         <TextView

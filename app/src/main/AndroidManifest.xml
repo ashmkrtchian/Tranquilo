@@ -15,14 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tranquilo">
         <activity
+            android:name=".SchulteTableActivity"
+            android:exported="false" />
+        <activity
             android:name=".itemClassicalTrack"
             android:exported="false" />
         <activity
             android:name=".Forest"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".WorksActivity"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".WorksActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".Podcast"
             android:exported="false" />

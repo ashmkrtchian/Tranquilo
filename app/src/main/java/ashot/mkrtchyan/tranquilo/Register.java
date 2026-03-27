@@ -22,10 +22,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editTextName;
     Button buttonReg;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -47,6 +51,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        editTextName = findViewById(R.id.name);
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
@@ -67,9 +72,15 @@ public class Register extends AppCompatActivity {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 String email, password;
+                String name = String.valueOf(editTextName.getText());
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
 
+                if (TextUtils.isEmpty(name)){
+                    Toast.makeText(Register.this, "Enter name", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
@@ -87,8 +98,21 @@ public class Register extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+                                    String uid = user.getUid();
+
+                                    String name = String.valueOf(editTextName.getText());
+                                    String emailText = String.valueOf(editTextEmail.getText());
+
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("name", name);
+                                    userData.put("email", emailText);
+
+                                    FirebaseFirestore.getInstance()
+                                            .collection("users")
+                                            .document(uid)
+                                            .set(userData);
 
                                     user.sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {

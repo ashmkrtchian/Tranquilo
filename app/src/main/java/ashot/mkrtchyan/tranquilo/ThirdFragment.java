@@ -10,6 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Locale;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -29,6 +37,8 @@ public class ThirdFragment extends Fragment {
     private String mParam2;
 
     View rowLogout;
+
+
     public ThirdFragment() {
         // Required empty public constructor
     }
@@ -71,6 +81,37 @@ public class ThirdFragment extends Fragment {
                 requireActivity().finish();
             }
         });
+
+        TextView tvName = view.findViewById(R.id.tvName);
+        TextView tvSchulteBest = view.findViewById(R.id.tvSchulteBest);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(user.getUid())
+                    .get()
+                    .addOnSuccessListener(snapshot -> {
+
+                        if (snapshot.exists()) {
+
+                            String name = snapshot.getString("name");
+                            if (name != null) {
+                                tvName.setText(name);
+                            }
+
+                            // քո արդեն եղած score-ը
+                            if (snapshot.contains("schulte_best_seconds")) {
+                                Long best = snapshot.getLong("schulte_best_seconds");
+                                if (best != null) {
+                                    String formatted = String.format(Locale.getDefault(),
+                                            "%02d:%02d", best / 60, best % 60);
+                                    tvSchulteBest.setText(formatted);
+                                }
+                            }
+                        }
+                    });
+        }
 
         return view;
     }

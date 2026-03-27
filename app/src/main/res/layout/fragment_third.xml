@@ -55,7 +55,7 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sofia Hartmann"
+                android:text="Loading..."
                 android:textColor="@color/darkGreen"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -188,6 +188,37 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
+            <!-- Divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="#30283618" />
+
+            <!-- Stat: Schulte Best -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvSchulteBest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--:--"
+                    android:textColor="@color/caramel"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="serif" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Best Schulte"
+                    android:textColor="@color/lightGreen"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Divider -->

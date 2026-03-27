@@ -27,7 +27,7 @@ public class SecondFragment extends Fragment {
     private String mParam2;
 
 
-    TextView music, breath, podcast;
+    TextView music, breath, podcast, schulteTable;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -88,6 +88,15 @@ public class SecondFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), Breath.class);
+                startActivity(i);
+            }
+        });
+
+        schulteTable = view.findViewById(R.id.schulteTable);
+        schulteTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), SchulteTableActivity.class);
                 startActivity(i);
             }
         });

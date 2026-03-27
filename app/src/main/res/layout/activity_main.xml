@@ -11,13 +11,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="@string/tranquilo"
         android:textSize="40sp"
         android:textColor="@color/darkGreen"
         android:textStyle="bold"/>
     <ViewFlipper
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:id="@+id/cards"
         android:inAnimation="@android:anim/slide_in_left"
@@ -34,7 +35,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="@string/relax_your_mind"
-                android:padding="16dp"
                 android:textSize="25sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
@@ -43,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:src="@drawable/flower"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:layout_gravity="center"/>
             <TextView
                 android:id="@+id/text1"
                 android:layout_width="wrap_content"
@@ -51,7 +52,7 @@
                 android:layout_weight="1"
                 android:text="@string/take_a_deep_breath_and_start_guided_breathing_exercises_to_reduce_stress_and_calm_your_thoughts"
                 android:padding="16dp"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
                 android:gravity="center"/>
@@ -85,7 +86,7 @@
                 android:layout_weight="1"
                 android:text="@string/log_how_you_feel_every_day_and_discover_patterns_that_affect_your_mental_well_being"
                 android:padding="16dp"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
                 android:gravity="center"/>
@@ -121,7 +122,7 @@
                 android:layout_weight="1"
                 android:text="@string/explore_relaxing_sounds_journaling_and_mindfulness_tools_designed_just_for_you"
                 android:padding="16dp"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:textColor="@color/darkGreen"
                 android:textStyle="bold"
                 android:gravity="center"/>
@@ -130,7 +131,7 @@
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:text="@string/get_started"
         android:textSize="25sp"
         android:backgroundTint="@color/darkGreen"
