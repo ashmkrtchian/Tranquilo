@@ -7,7 +7,14 @@ import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Breath extends AppCompatActivity {
@@ -15,6 +22,8 @@ public class Breath extends AppCompatActivity {
     View ball;
     TextView state;
     Button button;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
     String[] quotes = {
             "Calm mind brings inner strength.",
             "Breathing is the bridge to inner peace.",
@@ -75,6 +84,8 @@ public class Breath extends AppCompatActivity {
         holdSound = MediaPlayer.create(this, R.raw.hold);
         quoteText = findViewById(R.id.quoteText);
         quoteText.setText(quotes[randomIndex]);
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         button.setOnClickListener(v -> {
 
@@ -114,6 +125,33 @@ public class Breath extends AppCompatActivity {
 
     }
 
+    private void addCalmCoins(int coinsToAdd) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        String uid = user.getUid();
+        DocumentReference userRef = db.collection("users").document(uid);
+
+        db.runTransaction(transaction -> {
+            DocumentSnapshot snapshot = transaction.get(userRef);
+
+            long currentCoins = 0;
+            if (snapshot.exists() && snapshot.contains("calmCoins")) {
+                Long coins = snapshot.getLong("calmCoins");
+                if (coins != null) currentCoins = coins;
+            }
+
+            long newCoins = currentCoins + coinsToAdd;
+
+            transaction.update(userRef, "calmCoins", newCoins);
+
+            return null;
+        }).addOnSuccessListener(aVoid ->
+                Toast.makeText(this, "🪙 +"+coinsToAdd+" CalmCoins earned!", Toast.LENGTH_SHORT).show()
+        ).addOnFailureListener(e ->
+                Toast.makeText(this, "Error adding coins", Toast.LENGTH_SHORT).show()
+        );
+    }
     private void toggleBGSound(int soundResId) {
         if (currentBGSoundId == soundResId) {
             if (currentBGSound != null && currentBGSound.isPlaying()) {
@@ -160,6 +198,7 @@ public class Breath extends AppCompatActivity {
 
             animateBall(1.5f,1f,8000);
 
+            addCalmCoins(2);
         },11000);
 
         handler.postDelayed(this::startBreathing,19000);

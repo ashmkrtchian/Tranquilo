@@ -35,31 +35,27 @@ import java.util.Map;
 
 public class SchulteTableActivity extends AppCompatActivity {
 
-    // ── Colors ──────────────────────────────────────────────────────────────
     private static final int COLOR_DARK_GREEN  = 0xFF283618;
     private static final int COLOR_MILK        = 0xFFFEFAE0;
     private static final int COLOR_LIGHT_BROWN = 0xFFDDA15E;
     private static final int COLOR_LIGHT_GREEN = 0xFF606C38;
     private static final int COLOR_CARAMEL     = 0xFFBC6C25;
 
-    // ── UI ───────────────────────────────────────────────────────────────────
     private GridLayout schulteGrid;
     private TextView   tvTimer, tvCurrentNumber, tvScore;
     private Button     btnStartPause, btnReset;
 
-    // ── State ────────────────────────────────────────────────────────────────
     private static final int GRID_SIZE      = 5;
-    private static final int TOTAL_NUMBERS  = GRID_SIZE * GRID_SIZE; // 25
+    private static final int TOTAL_NUMBERS  = GRID_SIZE * GRID_SIZE;
 
     private final int[]  numbers   = new int[TOTAL_NUMBERS];
     private final CardView[] cells = new CardView[TOTAL_NUMBERS];
 
-    private int  nextExpected = 1;   // the number the player must tap next
+    private int  nextExpected = 1;
     private int  foundCount   = 0;
     private boolean gameRunning = false;
 
 
-    // ── Timer ────────────────────────────────────────────────────────────────
     private final Handler  timerHandler  = new Handler(Looper.getMainLooper());
     private long   elapsedSeconds = 0;
 
@@ -73,11 +69,10 @@ public class SchulteTableActivity extends AppCompatActivity {
             }
         }
     };
-    //database
+
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
-    // ────────────────────────────────────────────────────────────────────────
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +87,6 @@ public class SchulteTableActivity extends AppCompatActivity {
 
     }
 
-    // ── View binding ─────────────────────────────────────────────────────────
     private void bindViews() {
         schulteGrid     = findViewById(R.id.schulteGrid);
         tvTimer         = findViewById(R.id.tvTimer);
@@ -102,7 +96,6 @@ public class SchulteTableActivity extends AppCompatActivity {
         btnReset        = findViewById(R.id.btnReset);
     }
 
-    // ── Button listeners ─────────────────────────────────────────────────────
     private void setupButtons() {
         btnStartPause.setOnClickListener(v -> onStartPauseClicked());
         btnReset.setOnClickListener(v -> resetGame());
@@ -114,11 +107,9 @@ public class SchulteTableActivity extends AppCompatActivity {
         if (!gameRunning) startGame();
     }
 
-    // ── Grid builder ─────────────────────────────────────────────────────────
     private void buildGrid() {
         schulteGrid.removeAllViews();
 
-        // Fill numbers 1‥25 and shuffle
         List<Integer> list = new ArrayList<>();
         for (int i = 1; i <= TOTAL_NUMBERS; i++) list.add(i);
         Collections.shuffle(list);
@@ -131,7 +122,6 @@ public class SchulteTableActivity extends AppCompatActivity {
             final int index  = i;
             final int number = numbers[i];
 
-            // Card
             CardView card = new CardView(this);
             card.setRadius(dpToPx(12));
             card.setCardElevation(dpToPx(4));
@@ -147,7 +137,6 @@ public class SchulteTableActivity extends AppCompatActivity {
             params.setMargins(margin, margin, margin, margin);
             card.setLayoutParams(params);
 
-            // Number label
             TextView tv = new TextView(this);
             tv.setText(String.valueOf(number));
             tv.setTextSize(22f);
@@ -166,10 +155,8 @@ public class SchulteTableActivity extends AppCompatActivity {
         }
     }
 
-    // ── Cell tap ─────────────────────────────────────────────────────────────
     private void onCellTapped(int index, int number, CardView card, TextView tv) {
         if (number == nextExpected) {
-            // ✓ Correct
             foundCount++;
             nextExpected++;
 
@@ -179,18 +166,15 @@ public class SchulteTableActivity extends AppCompatActivity {
 
             if (foundCount == TOTAL_NUMBERS) onGameComplete();
         } else {
-            // ✗ Wrong — shake
             shakeCell(card);
         }
     }
 
-    // ── Visual feedback ───────────────────────────────────────────────────────
     private void markFound(CardView card, TextView tv) {
         card.setCardBackgroundColor(COLOR_LIGHT_GREEN);
         tv.setTextColor(COLOR_MILK);
         card.setEnabled(false);
 
-        // Pop scale animation
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(card, "scaleX", 1f, 1.15f, 1f);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(card, "scaleY", 1f, 1.15f, 1f);
         scaleX.setDuration(300);
@@ -208,7 +192,6 @@ public class SchulteTableActivity extends AppCompatActivity {
         shake.setDuration(400);
         shake.start();
 
-        // Briefly flash caramel
         if (view instanceof CardView) {
             CardView card = (CardView) view;
             card.setCardBackgroundColor(COLOR_CARAMEL);
@@ -217,7 +200,6 @@ public class SchulteTableActivity extends AppCompatActivity {
         }
     }
 
-    // ── Game flow ─────────────────────────────────────────────────────────────
     private void startGame() {
         gameRunning = true;
         btnStartPause.setEnabled(false);
@@ -277,7 +259,7 @@ public class SchulteTableActivity extends AppCompatActivity {
             if (snapshot.exists() && snapshot.contains("schulte_best_seconds")) {
                 Long currentBest = snapshot.getLong("schulte_best_seconds");
                 if (currentBest != null && currentBest <= completedSeconds) {
-                    shouldSave = false; // existing record is equal or better
+                    shouldSave = false;
                 }
             }
 
@@ -297,7 +279,6 @@ public class SchulteTableActivity extends AppCompatActivity {
         return String.format(Locale.getDefault(), "%02d:%02d", seconds / 60, seconds % 60);
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
     private void updateTimerDisplay() {
         long mins = elapsedSeconds / 60;
         long secs = elapsedSeconds % 60;
