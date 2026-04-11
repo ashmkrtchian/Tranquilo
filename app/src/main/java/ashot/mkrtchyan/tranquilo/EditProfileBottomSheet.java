@@ -21,6 +21,18 @@ import java.util.Map;
 
 public class EditProfileBottomSheet extends BottomSheetDialogFragment {
 
+
+    public interface OnProfileUpdatedListener {
+        void onProfileUpdated();
+    }
+
+    private OnProfileUpdatedListener listener;
+
+    public void setOnProfileUpdatedListener(OnProfileUpdatedListener listener) {
+        this.listener = listener;
+    }
+
+
     private ImageView ivPreview;
     private EditText etName;
     private String selectedAvatarKey = null;
@@ -116,6 +128,7 @@ public class EditProfileBottomSheet extends BottomSheetDialogFragment {
                 .update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Profile updated!", Toast.LENGTH_SHORT).show();
+                    if (listener != null) listener.onProfileUpdated();//added
                     dismiss();
                 })
                 .addOnFailureListener(e ->
