@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true"
     android:background="@color/milk">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +45,6 @@
 
     </LinearLayout>
 
-    <!-- Top 3 Podium -->
     <LinearLayout
         android:id="@+id/podiumSection"
         android:layout_width="match_parent"
@@ -58,7 +56,6 @@
         android:paddingHorizontal="8dp"
         android:gravity="bottom">
 
-        <!-- 2nd Place -->
         <LinearLayout
             android:id="@+id/podium2"
             android:layout_width="0dp"
@@ -176,7 +173,6 @@
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
 
-            <!-- Podium block (tallest) -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
@@ -185,7 +181,6 @@
                 android:alpha="0.9" />
         </LinearLayout>
 
-        <!-- 3rd Place -->
         <LinearLayout
             android:id="@+id/podium3"
             android:layout_width="0dp"
@@ -239,7 +234,6 @@
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
 
-            <!-- Podium block -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -250,7 +244,6 @@
 
     </LinearLayout>
 
-    <!-- Loading indicator -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -260,7 +253,6 @@
         android:visibility="gone"
         android:indeterminateTint="@color/lightGreen"/>
 
-    <!-- Rest of the list (rank 4+) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerLeaderboard"
         android:layout_width="match_parent"

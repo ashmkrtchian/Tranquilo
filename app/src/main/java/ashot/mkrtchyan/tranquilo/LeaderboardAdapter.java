@@ -46,18 +46,19 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         holder.tvName.setText(user.getName());
         holder.tvCoins.setText(String.valueOf(user.getCalmCoins()));
 
-        // Subtitle label based on coins
         holder.tvSubtitle.setText(getCalmTitle(user.getCalmCoins()));
 
-        // Avatar
-        if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-            Glide.with(context)
-                    .load(user.getAvatarUrl())
-                    .circleCrop()
-                    .placeholder(R.drawable.rain)
-                    .into(holder.ivAvatar);
-        } else {
-            holder.ivAvatar.setImageResource(R.drawable.rain);
+        String key = user.getAvatarUrl();
+        int drawableRes = getDrawableForKey(key);
+        holder.ivAvatar.setImageResource(drawableRes);
+    }
+    private int getDrawableForKey(String key) {
+        if (key == null) return R.drawable.man;
+        switch (key) {
+            case "dog": return R.drawable.dog;
+            case "woman":   return R.drawable.woman;
+            case "cat":  return R.drawable.cat;
+            default:       return R.drawable.man;
         }
     }
 

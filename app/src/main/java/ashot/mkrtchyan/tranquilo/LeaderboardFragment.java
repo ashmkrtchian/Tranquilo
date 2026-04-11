@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -54,7 +53,6 @@ public class LeaderboardFragment extends Fragment {
         setupRecyclerView();
         fetchLeaderboard();
 
-        // Hide back button since this is a fragment inside nav
         view.findViewById(R.id.btnBack).setVisibility(View.GONE);
     }
 
@@ -89,7 +87,7 @@ public class LeaderboardFragment extends Fragment {
                 .limit(20)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    if (!isAdded()) return; // fragment may have detached
+                    if (!isAdded()) return;
 
                     progressBar.setVisibility(View.GONE);
                     userList.clear();
@@ -98,9 +96,9 @@ public class LeaderboardFragment extends Fragment {
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         String name      = doc.getString("name") != null ? doc.getString("name") : "Anonymous";
                         long   calmCoins = doc.getLong("calmCoins") != null ? doc.getLong("calmCoins") : 0;
-                        String avatarUrl = doc.getString("avatarUrl");
+                        String profileKey = doc.getString("profilePicture");
 
-                        userList.add(new LeaderboardUser(doc.getId(), name, calmCoins, avatarUrl, rank));
+                        userList.add(new LeaderboardUser(doc.getId(), name, calmCoins, profileKey, rank));
                         rank++;
                     }
 
@@ -129,12 +127,14 @@ public class LeaderboardFragment extends Fragment {
         nameView.setText(user.getName());
         coinsView.setText(user.getCalmCoins() + " \uD83E\uDE99");
 
-        if (user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-            Glide.with(this)
-                    .load(user.getAvatarUrl())
-                    .circleCrop()
-                    .placeholder(R.drawable.rain)
-                    .into(avatarView);
+        String key = user.getAvatarUrl();
+        int drawableRes;
+        switch (key != null ? key : "") {
+            case "woman": drawableRes = R.drawable.woman; break;
+            case "cat":   drawableRes = R.drawable.cat;   break;
+            case "dog":  drawableRes = R.drawable.dog;  break;
+            default:       drawableRes = R.drawable.man;   break;
         }
+        avatarView.setImageResource(drawableRes);
     }
 }

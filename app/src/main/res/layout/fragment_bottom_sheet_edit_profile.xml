@@ -1,6 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/milk"
+    android:paddingBottom="32dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/lightBrown" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Avatar"
+        android:textColor="@color/lightGreen"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="12dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_preview"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/man"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:paddingHorizontal="24dp">
+
+        <ImageView
+            android:id="@+id/avatar_rain"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/man"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/avatar_forest"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/woman"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/avatar_fire"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/dog"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/avatar_ocean"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/cat"
+            android:scaleType="centerCrop"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightBrown"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Display Name"
+        android:textColor="@color/lightGreen"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="28dp"
+        android:padding="14dp"
+        android:hint="Your name"
+        android:textColor="@color/darkGreen"
+        android:textColorHint="@color/lightBrown"
+        android:textSize="15sp"
+        android:background="@drawable/bg_stat_card"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btn_save_profile"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Save Changes"
+        android:textColor="@color/milk"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/darkGreen" />
+
+</LinearLayout>

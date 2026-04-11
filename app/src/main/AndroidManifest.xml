@@ -17,11 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tranquilo">
-
-        <service
-            android:name=".StepService"
-            android:exported="false"
-            android:foregroundServiceType="health" />
+        <activity
+            android:name=".MoodActivity"
+            android:exported="false" />
 
         <activity
             android:name=".SchulteTableActivity"
@@ -40,9 +38,6 @@
         <activity android:name=".ClassicalMusicActivity" />
         <activity
             android:name=".Breath"
-            android:exported="false" />
-        <activity
-            android:name=".WalkingActivity"
             android:exported="false" />
         <activity
             android:name=".Fire"

@@ -31,7 +31,7 @@ public class SecondFragment extends Fragment {
 
 //    TextView breath, podcast, schulteTable;
 //    LinearLayout music;
-    CardView breath, podcast, schulteTable, music, walking;
+    CardView breath, podcast, schulteTable, music, moodTracking;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -105,11 +105,11 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        walking = view.findViewById(R.id.walking);
-        walking.setOnClickListener(new View.OnClickListener() {
+        moodTracking = view.findViewById(R.id.moodTracking);
+        moodTracking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), WalkingActivity.class);
+                Intent i = new Intent(getContext(), MoodActivity.class);
                 startActivity(i);
             }
         });

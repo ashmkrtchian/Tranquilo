@@ -216,7 +216,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/walking"
+                    android:id="@+id/moodTracking"
                     android:layout_width="0dp"
                     android:layout_height="155dp"
                     android:layout_weight="1"
@@ -244,7 +244,7 @@
                             android:id="@+id/walkingLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Walking"
+                            android:text="Mood Tracking"
                             android:textSize="17sp"
                             android:textColor="@color/milk"
                             android:textStyle="bold"
@@ -255,7 +255,7 @@
                             android:id="@+id/walkingHint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="mindful steps"
+                            android:text="Track your mood daily"
                             android:textSize="11sp"
                             android:textColor="@color/milk"
                             android:alpha="0.65"

@@ -31,7 +31,6 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_gravity="center"
-                android:src="@drawable/rain"
                 app:civ_border_color="@color/milk"
                 app:civ_border_width="3dp" />
 
@@ -67,17 +66,31 @@
                 android:textSize="14sp" />
 
             <!-- Edit Profile Button -->
-            <Button
+<!--            <Button-->
+<!--                android:id="@+id/btnEditProfile"-->
+<!--                android:backgroundTint="@null"-->
+<!--                android:foregroundTint="@null"-->
+<!--                android:layout_width="160dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:background="@drawable/btn_outline_green"-->
+<!--                android:text="Edit Profile"-->
+<!--                android:textColor="@color/darkGreen"-->
+<!--                android:textSize="13sp"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:letterSpacing="0.05" />-->
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnEditProfile"
                 android:layout_width="160dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/btn_outline_green"
+                android:backgroundTint="@null"
                 android:text="Edit Profile"
                 android:textColor="@color/darkGreen"
                 android:textSize="13sp"
                 android:textAllCaps="false"
-                android:letterSpacing="0.05" />
+                android:letterSpacing="0.05"/>
 
         </LinearLayout>
 
@@ -107,6 +120,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tvDayStreak"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"

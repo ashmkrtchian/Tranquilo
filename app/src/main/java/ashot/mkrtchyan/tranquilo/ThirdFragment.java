@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,30 +18,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Locale;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ThirdFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ThirdFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    View rowLogout;
-
-
-    public ThirdFragment() {
-        // Required empty public constructor
-    }
+    public ThirdFragment() {}
 
     public static ThirdFragment newInstance(String param1, String param2) {
         ThirdFragment fragment = new ThirdFragment();
@@ -52,13 +37,9 @@ public class ThirdFragment extends Fragment {
         return fragment;
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -72,22 +53,24 @@ public class ThirdFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_third, container, false);
 
-        rowLogout = view.findViewById(R.id.rowLogout);
+        view.findViewById(R.id.rowLogout).setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(requireActivity(), Login.class);
+            startActivity(i);
+            requireActivity().finish();
+        });
 
-        rowLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent i = new Intent(requireActivity(), Login.class);
-                startActivity(i);
-                requireActivity().finish();
-            }
+        Button btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        btnEditProfile.setOnClickListener(v -> {
+            EditProfileBottomSheet sheet = new EditProfileBottomSheet();
+            sheet.show(getChildFragmentManager(), "EditProfileBottomSheet");
         });
 
         TextView tvName = view.findViewById(R.id.tvName);
         TextView tvSchulteBest = view.findViewById(R.id.tvSchulteBest);
-
         TextView tvCalmCoins = view.findViewById(R.id.tvCalmCoins);
+        ImageView imgAvatar = view.findViewById(R.id.imgAvatar);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             FirebaseFirestore.getInstance()
@@ -95,27 +78,38 @@ public class ThirdFragment extends Fragment {
                     .document(user.getUid())
                     .get()
                     .addOnSuccessListener(snapshot -> {
-
                         if (snapshot.exists()) {
 
                             String name = snapshot.getString("name");
-                            if (name != null) {
-                                tvName.setText(name);
+                            if (name != null) tvName.setText(name);
+
+                            String profileKey = snapshot.getString("profilePicture");
+                            if (profileKey != null) {
+                                switch (profileKey) {
+                                    case "man":   imgAvatar.setImageResource(R.drawable.man);   break;
+                                    case "woman": imgAvatar.setImageResource(R.drawable.woman); break;
+                                    case "dog":   imgAvatar.setImageResource(R.drawable.dog);   break;
+                                    case "cat":  imgAvatar.setImageResource(R.drawable.cat);  break;
+                                }
                             }
 
                             if (snapshot.contains("schulte_best_seconds")) {
                                 Long best = snapshot.getLong("schulte_best_seconds");
                                 if (best != null) {
-                                    String formatted = String.format(Locale.getDefault(),
-                                            "%02d:%02d", best / 60, best % 60);
-                                    tvSchulteBest.setText(formatted);
+                                    tvSchulteBest.setText(String.format(Locale.getDefault(),
+                                            "%02d:%02d", best / 60, best % 60));
                                 }
                             }
+
                             if (snapshot.contains("calmCoins")) {
                                 Long coins = snapshot.getLong("calmCoins");
-                                if (coins != null) {
-                                    tvCalmCoins.setText(coins.toString());
-                                }
+                                if (coins != null) tvCalmCoins.setText(coins.toString());
+                            }
+
+                            if (snapshot.contains("streak")) {
+                                Long streak = snapshot.getLong("streak");
+                                TextView tvStreak = view.findViewById(R.id.tvDayStreak);
+                                if (streak != null) tvStreak.setText(streak + " days");
                             }
                         }
                     });
