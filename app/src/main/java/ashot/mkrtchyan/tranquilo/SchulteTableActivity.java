@@ -243,6 +243,7 @@ public class SchulteTableActivity extends AppCompatActivity {
                 "🎉 Completed in %02d:%02d!", mins, secs);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         saveBestScore(elapsedSeconds);
+        saveLastSchulteSession();
         addCalmCoins(10);
     }
 
@@ -292,6 +293,17 @@ public class SchulteTableActivity extends AppCompatActivity {
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
+    }
+
+    private void saveLastSchulteSession() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("lastSchulteSession", System.currentTimeMillis());
+
+        db.collection("users").document(user.getUid())
+                .set(data, SetOptions.merge());
     }
 
     private void addCalmCoins(int coinsToAdd) {

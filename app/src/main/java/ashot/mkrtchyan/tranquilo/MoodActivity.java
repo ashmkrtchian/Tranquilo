@@ -66,7 +66,6 @@ public class MoodActivity extends AppCompatActivity {
         tvSelectedMood.setText(mood);
         tvMoodTip.setText(tip);
 
-        // Mood card — հայտնվում է fade+slide-ով
         if (cardResult.getVisibility() != View.VISIBLE) {
             cardResult.setAlpha(0f);
             cardResult.setTranslationY(30f);
@@ -91,6 +90,7 @@ public class MoodActivity extends AppCompatActivity {
 
             @Override
             public void onAlreadyDone() {
+                saveLastMoodSession();
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     tvStreakInfo.setText("—");
                     tvStreakLabel.setText("Already tracked today");
@@ -108,7 +108,6 @@ public class MoodActivity extends AppCompatActivity {
         tvStreakLabel.setText("day streak");
         cardStreak.setVisibility(View.VISIBLE);
 
-        // Step 1 — Card հայտնվում է overshoot-ով
         cardStreak.setScaleX(0f);
         cardStreak.setScaleY(0f);
         cardStreak.setAlpha(0f);
@@ -121,7 +120,6 @@ public class MoodActivity extends AppCompatActivity {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        // Step 2 — Count-up թիվը
                         startCountUp(newStreak);
                     }
                 })
@@ -140,14 +138,12 @@ public class MoodActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 tvStreakInfo.setText(String.valueOf(target));
-                // Step 3 — Triple pulse վերջում
                 triplePulse(tvStreakInfo, 0);
             }
         });
         animator.start();
     }
 
-    // 3 անգամ pulse — ինչպես Duolingo-ի celebration-ը
     private void triplePulse(View view, int count) {
         if (count >= 3) return;
         view.animate()
@@ -164,6 +160,20 @@ public class MoodActivity extends AppCompatActivity {
                                                 .postDelayed(() -> triplePulse(view, count + 1), 60))
                                 .start()
                 ).start();
+    }
+
+    private void saveLastMoodSession() {
+        com.google.firebase.auth.FirebaseUser user =
+                com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("lastMoodSession", System.currentTimeMillis());
+
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .set(data, com.google.firebase.firestore.SetOptions.merge());
     }
 
     private void animateCardAppear(View view) {

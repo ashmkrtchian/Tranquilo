@@ -212,12 +212,12 @@
                     <FrameLayout
                         android:layout_width="44dp"
                         android:layout_height="44dp"
-                        android:background="@drawable/icon_bg_green">
+                        android:background="@drawable/icon_bg_brown">
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/rain"/>
+                            android:src="@drawable/smile2"/>
                     </FrameLayout>
 
                     <LinearLayout
@@ -236,18 +236,14 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvMoodSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Feeling calm 7 days in a row"
+                            android:text="Last tracked: —"
                             android:textColor="@color/lightGreen"
                             android:textSize="12sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/forest" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -294,18 +290,14 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvBreathingSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Last session: 10 min ago"
+                            android:text="Last session: —"
                             android:textColor="@color/lightGreen"
                             android:textSize="12sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/forest"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -330,10 +322,10 @@
                         android:layout_height="44dp"
                         android:background="@drawable/icon_bg_caramel">
                         <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
+                            android:layout_width="27dp"
+                            android:layout_height="27dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/fire"/>
+                            android:src="@drawable/schulte"/>
                     </FrameLayout>
 
                     <LinearLayout
@@ -346,24 +338,20 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Journal"
+                            android:text="Schulte Table"
                             android:textColor="@color/darkGreen"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvSchulteSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="34 entries written"
+                            android:text="Last session: —"
                             android:textColor="@color/lightGreen"
                             android:textSize="12sp"
                             android:layout_marginTop="2dp" />
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/forest"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

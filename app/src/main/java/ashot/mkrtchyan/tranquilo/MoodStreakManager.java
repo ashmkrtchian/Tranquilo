@@ -24,9 +24,39 @@ public class MoodStreakManager {
         void onError();
     }
 
+    public interface ResetCallback {
+        void onChecked(int currentStreak);
+        void onError();
+    }
+
     public MoodStreakManager() {
         db = FirebaseFirestore.getInstance();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+    public void checkAndResetStreakIfBroken(ResetCallback callback) {
+        String today = getToday();
+        String yesterday = getYesterday();
+
+        db.collection(COLLECTION).document(userId).get()
+                .addOnSuccessListener(doc -> {
+                    String lastMoodDate = doc.getString(FIELD_LAST_MOOD);
+                    Long currentStreak = doc.getLong(FIELD_STREAK);
+                    int streak = currentStreak != null ? currentStreak.intValue() : 0;
+
+                    boolean streakAlive = today.equals(lastMoodDate) || yesterday.equals(lastMoodDate);
+
+                    if (streakAlive) {
+                        callback.onChecked(streak);
+                    } else {
+                        Map<String, Object> data = new HashMap<>();
+                        data.put(FIELD_STREAK, 0);
+                        db.collection(COLLECTION).document(userId)
+                                .update(data)
+                                .addOnSuccessListener(v -> callback.onChecked(0))
+                                .addOnFailureListener(e -> callback.onError());
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError());
     }
 
     public void recordMoodAndUpdateStreak(StreakCallback callback) {

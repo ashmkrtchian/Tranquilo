@@ -97,6 +97,7 @@ public class Breath extends AppCompatActivity {
                 running = false;
                 button.setText("START");
                 state.setText("Ready");
+                saveLastBreathingSession();
 
                 if (inhaleSound.isPlaying()) inhaleSound.pause();
                 if (exhaleSound.isPlaying()) exhaleSound.pause();
@@ -205,6 +206,19 @@ public class Breath extends AppCompatActivity {
 
     }
 
+    private void saveLastBreathingSession() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        db.collection("users").document(user.getUid())
+                .update("lastBreathingSession", System.currentTimeMillis())
+                .addOnFailureListener(e -> {
+                    java.util.Map<String, Object> data = new java.util.HashMap<>();
+                    data.put("lastBreathingSession", System.currentTimeMillis());
+                    db.collection("users").document(user.getUid())
+                            .set(data, SetOptions.merge());
+                });
+    }
     private void animateBall(float from, float to, int duration){
 
         ScaleAnimation anim = new ScaleAnimation(

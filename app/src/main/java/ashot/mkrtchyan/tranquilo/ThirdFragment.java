@@ -84,14 +84,61 @@ public class ThirdFragment extends Fragment {
                                 if (coins != null) tvCalmCoins.setText(coins.toString());
                             }
 
+                            if (snapshot.contains("lastSchulteSession")) {
+                                Long lastSession = snapshot.getLong("lastSchulteSession");
+                                TextView tvSchulteSubtitle = view.findViewById(R.id.tvSchulteSubtitle);
+                                if (lastSession != null && tvSchulteSubtitle != null) {
+                                    tvSchulteSubtitle.setText("Last session: " + formatLastSession(lastSession));
+                                }
+                            }
+
+                            if (snapshot.contains("lastMoodSession")) {
+                                Long lastSession = snapshot.getLong("lastMoodSession");
+                                TextView tvMoodSubtitle = view.findViewById(R.id.tvMoodSubtitle);
+                                if (lastSession != null && tvMoodSubtitle != null) {
+                                    tvMoodSubtitle.setText("Last tracked: " + formatLastSession(lastSession));
+                                }
+                            }
+
+                            if (snapshot.contains("lastBreathingSession")) {
+                                Long lastSession = snapshot.getLong("lastBreathingSession");
+                                TextView tvBreathingSubtitle = view.findViewById(R.id.tvBreathingSubtitle);
+                                if (lastSession != null && tvBreathingSubtitle != null) {
+                                    tvBreathingSubtitle.setText("Last session: " + formatLastSession(lastSession));
+                                }
+                            }
+
                             if (snapshot.contains("streak")) {
                                 Long streak = snapshot.getLong("streak");
                                 TextView tvStreak = view.findViewById(R.id.tvDayStreak);
-                                if (streak != null) tvStreak.setText(streak + " days");
+                                if (streak != null) {
+                                    if (streak == 1) {
+                                        tvStreak.setText("1 day");
+                                    } else if (streak == 0) {
+                                        tvStreak.setText("No streak yet");
+                                    } else {
+                                        tvStreak.setText(streak + " days");
+                                    }
+                                }
                             }
                         }
                     });
         }
+    }
+
+    private String formatLastSession(long timestamp) {
+        long now = System.currentTimeMillis();
+        long diff = now - timestamp;
+
+        long minutes = diff / (60 * 1000);
+        long hours   = diff / (60 * 60 * 1000);
+        long days    = diff / (24 * 60 * 60 * 1000);
+
+        if (minutes < 1)   return "Just now";
+        if (minutes < 60)  return minutes + " min ago";
+        if (hours < 24)    return hours + " hour" + (hours == 1 ? "" : "s") + " ago";
+        if (days == 1)     return "Yesterday";
+        return days + " days ago";
     }
 
     @Override
@@ -100,6 +147,21 @@ public class ThirdFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_third, container, false);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            new MoodStreakManager().checkAndResetStreakIfBroken(new MoodStreakManager.ResetCallback() {
+                @Override
+                public void onChecked(int currentStreak) {
+                    loadUserData(view);
+                }
+
+                @Override
+                public void onError() {
+                    loadUserData(view);
+                }
+            });
+        }
 
         view.findViewById(R.id.rowLogout).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
@@ -114,8 +176,6 @@ public class ThirdFragment extends Fragment {
             sheet.setOnProfileUpdatedListener(() -> loadUserData(view));
             sheet.show(getChildFragmentManager(), "EditProfileBottomSheet");
         });
-
-        loadUserData(view);
 
         return view;
     }
