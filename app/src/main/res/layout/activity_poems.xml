@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:orientation="vertical"
+    android:background="@color/milk"
+    android:fitsSystemWindows="true">
+
+    <!-- Header row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Poems"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/darkGreen"
+            android:fontFamily="serif"/>
+
+        <!-- Timer button -->
+        <LinearLayout
+            android:id="@+id/btnTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card_green"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:layout_marginEnd="10dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_menu_recent_history"
+                android:layout_marginEnd="4dp"/>
+
+            <TextView
+                android:id="@+id/tvTimerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Timer"
+                android:textSize="13sp"
+                android:textColor="@color/milk"
+                android:fontFamily="serif"/>
+        </LinearLayout>
+
+        <!-- Autoplay toggle -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card_green"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Autoplay"
+                android:textSize="13sp"
+                android:textColor="@color/milk"
+                android:fontFamily="serif"
+                android:layout_marginEnd="6dp"/>
+
+            <Switch
+                android:id="@+id/switchAutoplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:theme="@style/GreenSwitch"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/poemRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"/>
+
+</LinearLayout>

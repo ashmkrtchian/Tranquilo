@@ -31,7 +31,7 @@ public class SecondFragment extends Fragment {
 
 //    TextView breath, podcast, schulteTable;
 //    LinearLayout music;
-    CardView breath, podcast, schulteTable, music, moodTracking;
+    CardView breath, podcast, schulteTable, music, moodTracking,poetryLabel;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -114,6 +114,14 @@ public class SecondFragment extends Fragment {
             }
         });
 
+        poetryLabel = view.findViewById(R.id.poetryLabel);
+        poetryLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), PoemsActivity.class);
+                startActivity(i);
+            }
+        });
         return view;
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="GreenSwitch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="colorAccent">#606C38</item>
+        <item name="colorControlActivated">#283618</item>
+        <item name="colorSwitchThumbNormal">#FEFAE0</item>
+        <item name="android:colorForeground">#BC6C25</item>
+    </style>
+
+</resources>
