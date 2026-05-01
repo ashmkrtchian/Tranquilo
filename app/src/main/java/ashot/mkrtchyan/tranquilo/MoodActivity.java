@@ -37,17 +37,34 @@ public class MoodActivity extends AppCompatActivity {
         tvStreakLabel  = findViewById(R.id.tv_streak_label);
 
         findViewById(R.id.btn_happy).setOnClickListener(v ->
-                onMoodSelected(v, "You're feeling Happy", "Keep this energy going. Try a short gratitude meditation."));
+                onMoodSelected(v,
+                        "You're feeling Happy",
+                        "Great mood! Save this moment and boost your streak. Try a short breathing session to stay balanced."));
+
         findViewById(R.id.btn_calm).setOnClickListener(v ->
-                onMoodSelected(v, "You're feeling Calm", "Perfect state for deep focus or gentle breathing."));
+                onMoodSelected(v,
+                        "You're feeling Calm",
+                        "Perfect state. Start a focus session or Schulte table to use this clarity effectively."));
+
         findViewById(R.id.btn_anxious).setOnClickListener(v ->
-                onMoodSelected(v, "You're feeling Anxious", "Try our 4-7-8 breathing exercise to ease your mind."));
+                onMoodSelected(v,
+                        "You're feeling Anxious",
+                        "Open the breathing exercise and follow the rhythm. It will help slow your thoughts and relax."));
+
         findViewById(R.id.btn_sad).setOnClickListener(v ->
-                onMoodSelected(v, "You're feeling Sad", "It's okay. Take a break and listen to soothing sounds."));
+                onMoodSelected(v,
+                        "You're feeling Sad",
+                        "Try calming sounds or a gentle breathing session. Give yourself a few quiet minutes."));
+
         findViewById(R.id.btn_tired).setOnClickListener(v ->
-                onMoodSelected(v, "You're feeling Tired", "A short 10-minute rest with ambient sound can help."));
+                onMoodSelected(v,
+                        "You're feeling Tired",
+                        "Play ambient sounds and take a short reset. Even 5–10 minutes can recharge you."));
+
         findViewById(R.id.btn_focused).setOnClickListener(v ->
-                onMoodSelected(v, "You're feeling Focused", "Great! Use a focus timer to make the most of it."));
+                onMoodSelected(v,
+                        "You're feeling Focused",
+                        "Perfect moment to go deep. Start a Schulte session and earn CalmCoins."));
     }
 
     private void onMoodSelected(View selected, String mood, String tip) {
@@ -84,6 +101,8 @@ public class MoodActivity extends AppCompatActivity {
         manager.recordMoodAndUpdateStreak(new MoodStreakManager.StreakCallback() {
             @Override
             public void onStreakUpdated(int newStreak) {
+                saveLastMoodSession();
+
                 new Handler(Looper.getMainLooper()).postDelayed(() ->
                         showStreakAnimation(newStreak), 400);
             }
