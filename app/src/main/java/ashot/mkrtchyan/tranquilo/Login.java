@@ -29,7 +29,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
-
+    TextView forgotPassword;
 
     @Override
     public void onStart() {
@@ -62,6 +62,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        forgotPassword = findViewById(R.id.forgotPassword);
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
@@ -75,6 +76,29 @@ public class Login extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
+        });
+
+        forgotPassword.setOnClickListener(v -> {
+
+            String email = editTextEmail.getText().toString().trim();
+
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(Login.this, "Enter your email first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Login.this,
+                                    "Password reset link sent to your email",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(Login.this,
+                                    "Failed to send reset email",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
