@@ -402,6 +402,7 @@
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#15283618" />
 
+            <!--
             <LinearLayout
                 android:id="@+id/rowPrivacy"
                 android:layout_width="match_parent"
@@ -426,7 +427,7 @@
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#15283618" />
-
+            -->
             <LinearLayout
                 android:id="@+id/rowLogout"
                 android:layout_width="match_parent"

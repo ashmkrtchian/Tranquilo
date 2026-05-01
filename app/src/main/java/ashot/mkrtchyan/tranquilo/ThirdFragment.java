@@ -1,8 +1,13 @@
 package ashot.mkrtchyan.tranquilo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -163,6 +169,17 @@ public class ThirdFragment extends Fragment {
             });
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                        101
+                );
+            }
+        }
+
         view.findViewById(R.id.rowLogout).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(requireActivity(), Login.class);
@@ -175,6 +192,14 @@ public class ThirdFragment extends Fragment {
             EditProfileBottomSheet sheet = new EditProfileBottomSheet();
             sheet.setOnProfileUpdatedListener(() -> loadUserData(view));
             sheet.show(getChildFragmentManager(), "EditProfileBottomSheet");
+        });
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("reminder_prefs", Context.MODE_PRIVATE);
+
+        LinearLayout rowNotifications = view.findViewById(R.id.rowNotifications);
+        rowNotifications.setOnClickListener(v -> {
+            NotificationSettingsBottomSheet sheet = new NotificationSettingsBottomSheet();
+            sheet.show(getChildFragmentManager(), "NotificationSettings");
         });
 
         return view;
