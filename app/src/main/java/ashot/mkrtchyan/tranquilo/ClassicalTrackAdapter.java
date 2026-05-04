@@ -3,7 +3,6 @@ package ashot.mkrtchyan.tranquilo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,20 +20,12 @@ class ClassicalTrackAdapter
 
     private final List<ClassicalTrack>  tracks;
     private final OnTrackClickListener  listener;
-    private int playingIndex = -1;
 
     ClassicalTrackAdapter(List<ClassicalTrack> tracks, OnTrackClickListener listener) {
         this.tracks   = tracks;
         this.listener = listener;
     }
 
-    /** Call this to highlight the currently playing row. */
-    void setPlayingIndex(int index) {
-        int previous = playingIndex;
-        playingIndex = index;
-        if (previous >= 0 && previous < tracks.size()) notifyItemChanged(previous);
-        if (playingIndex >= 0 && playingIndex < tracks.size()) notifyItemChanged(playingIndex);
-    }
 
     @NonNull
     @Override
@@ -47,18 +38,10 @@ class ClassicalTrackAdapter
     @Override
     public void onBindViewHolder(@NonNull TrackViewHolder h, int position) {
         ClassicalTrack track    = tracks.get(position);
-        boolean        playing  = (position == playingIndex);
 
         h.tvTitle.setText(track.title);
         h.tvComposer.setText(track.composer);
         h.tvDuration.setText(track.duration);
-
-        // Swap music-note icon for equalizer when playing
-        h.ivMusicNote.setVisibility(playing ? View.GONE    : View.VISIBLE);
-        h.ivPlaying.setVisibility  (playing ? View.VISIBLE : View.GONE);
-
-        // Highlight card slightly when playing
-        h.itemView.setAlpha(playing ? 1f : 0.92f);
 
         h.btnPlay.setOnClickListener(v -> {
             if (listener != null) listener.onTrackClick(h.getAdapterPosition());
@@ -74,7 +57,7 @@ class ClassicalTrackAdapter
     // ── ViewHolder ─────────────────────────────────────────────────────────
     static class TrackViewHolder extends RecyclerView.ViewHolder {
         TextView    tvTitle, tvComposer, tvDuration;
-        ImageView   ivMusicNote, ivPlaying, btnPlay;
+        ImageView   ivMusicNote, btnPlay;
 
         TrackViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,7 +66,6 @@ class ClassicalTrackAdapter
             tvDuration  = itemView.findViewById(R.id.tvDuration);
             btnPlay     = itemView.findViewById(R.id.btnPlay);
             ivMusicNote = itemView.findViewById(R.id.ivMusicNote);
-            ivPlaying   = itemView.findViewById(R.id.ivPlaying);
         }
     }
 }

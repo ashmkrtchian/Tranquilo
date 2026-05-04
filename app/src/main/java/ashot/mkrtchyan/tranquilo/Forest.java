@@ -88,11 +88,14 @@ public class Forest extends AppCompatActivity {
             public void run() {
                 while (mediaPlayer != null) {
                     try {
+                        MediaPlayer mp = mediaPlayer;
+                        if (mp == null) break;
                         Message msg = new Message();
-                        msg.what = mediaPlayer.getCurrentPosition();
+                        msg.what = mp.getCurrentPosition();
                         handler.sendMessage(msg);
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
+                        break;
                     }
                 }
             }

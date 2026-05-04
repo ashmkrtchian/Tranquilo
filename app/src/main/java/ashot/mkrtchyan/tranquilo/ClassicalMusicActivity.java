@@ -65,7 +65,7 @@ public class ClassicalMusicActivity extends AppCompatActivity
         bindViews();
         setupChips();
         setupSearch();
-        fetchTracks(""); // load default tracks on open
+        fetchTracks("");
     }
 
     private void bindViews() {
@@ -87,7 +87,6 @@ public class ClassicalMusicActivity extends AppCompatActivity
         btnNext.setOnClickListener(v -> playTrack(currentIndex + 1));
     }
 
-    // ── Jamendo API fetch ──────────────────────────────────────────────────
     private void fetchTracks(String query) {
         tvListLabel.setText("Loading…");
         executor.execute(() -> {
@@ -119,11 +118,24 @@ public class ClassicalMusicActivity extends AppCompatActivity
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject obj = results.getJSONObject(i);
                     String title    = obj.getString("name");
-                    String artist   = obj.getString("artist_name");
+                    //String artist   = obj.getString("artist_name");
+                    String artistName = obj.getString("artist_name");
+                    String composer = "Classical";
+                    for (String cat : CATEGORIES) {
+                        if (!cat.equals("All") && artistName.toLowerCase().contains(cat.toLowerCase())) {
+                            composer = cat;
+                            break;
+                        }
+                        if (!cat.equals("All") && query.toLowerCase().contains(cat.toLowerCase())) {
+                            composer = cat;
+                            break;
+                        }
+                    }
                     String duration = formatDuration(obj.getInt("duration"));
                     String audioUrl = obj.getString("audio"); // direct mp3 URL
 
-                    allTracks.add(new ClassicalTrack(title, artist, duration, audioUrl, "classical"));
+                    //allTracks.add(new ClassicalTrack(title, artist, duration, audioUrl, "classical"));
+                    allTracks.add(new ClassicalTrack(title, composer, duration, audioUrl, "classical"));
                 }
 
                 runOnUiThread(() -> {
@@ -152,7 +164,6 @@ public class ClassicalMusicActivity extends AppCompatActivity
         return (seconds / 60) + ":" + String.format("%02d", seconds % 60);
     }
 
-    // ── Search ─────────────────────────────────────────────────────────────
     private void setupSearch() {
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int i, int c, int a) {}
@@ -165,13 +176,12 @@ public class ClassicalMusicActivity extends AppCompatActivity
                     tvListLabel.setText("Featured Pieces");
                     if (adapter != null) adapter.notifyDataSetChanged();
                 } else {
-                    fetchTracks(q); // search Jamendo live
+                    fetchTracks(q);
                 }
             }
         });
     }
 
-    // ── Chips ──────────────────────────────────────────────────────────────
     private void setupChips() {
         for (String cat : CATEGORIES) {
             TextView chip = new TextView(this);
@@ -205,7 +215,6 @@ public class ClassicalMusicActivity extends AppCompatActivity
         }
     }
 
-    // ── Playback ───────────────────────────────────────────────────────────
     @Override
     public void onTrackClick(int position) {
         playTrack(position);
@@ -224,10 +233,7 @@ public class ClassicalMusicActivity extends AppCompatActivity
         tvNowPlayingComposer.setText(track.composer);
         isPlaying = true;
         btnPlayPause.setImageResource(R.drawable.stop2);
-        adapter.setPlayingIndex(currentIndex);
-        rvTracks.scrollToPosition(currentIndex);
 
-        // Release previous player
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -241,7 +247,7 @@ public class ClassicalMusicActivity extends AppCompatActivity
                 .build());
 
         try {
-            mediaPlayer.setDataSource(track.youtubeId); // youtubeId now holds mp3 URL
+            mediaPlayer.setDataSource(track.youtubeId);
             mediaPlayer.prepareAsync();
             mediaPlayer.setOnPreparedListener(mp -> mp.start());
             mediaPlayer.setOnCompletionListener(mp -> playTrack(currentIndex + 1));

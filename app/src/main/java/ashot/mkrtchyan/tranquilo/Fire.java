@@ -87,16 +87,18 @@ public class Fire extends AppCompatActivity {
             public void run() {
                 while (mediaPlayer != null) {
                     try {
+                        MediaPlayer mp = mediaPlayer;
+                        if (mp == null) break;
                         Message msg = new Message();
-                        msg.what = mediaPlayer.getCurrentPosition();
+                        msg.what = mp.getCurrentPosition();
                         handler.sendMessage(msg);
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
+                        break;
                     }
                 }
             }
         }).start();
-
     }
     @Override
     protected void onDestroy() {
@@ -112,10 +114,8 @@ public class Fire extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             int currentPosition = msg.what;
-            //update seekbar position
             seekBarPosition.setProgress(currentPosition);
 
-            //update timeView
             String elapsedTime = createTimeView(currentPosition);
             elapsedTimeView.setText(elapsedTime);
 
