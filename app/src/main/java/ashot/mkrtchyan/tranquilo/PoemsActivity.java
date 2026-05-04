@@ -3,6 +3,7 @@ package ashot.mkrtchyan.tranquilo;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Switch;
@@ -23,6 +24,8 @@ public class PoemsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poems);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         RecyclerView recyclerView = findViewById(R.id.poemRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -124,8 +127,8 @@ public class PoemsActivity extends AppCompatActivity {
             public void onFinish() {
                 if (adapter != null) adapter.releasePlayer();
                 sleepTimer = null;
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 finishAffinity();
-                System.exit(0);
             }
         }.start();
 
