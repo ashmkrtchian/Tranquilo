@@ -26,7 +26,6 @@ public class Podcast extends AppCompatActivity {
         TextView tvSuggested = findViewById(R.id.tvSuggested);
         CardView cardSuggested = findViewById(R.id.cardSuggested);
 
-        // 🎧 20+ YouTube podcast links
         podcasts.add(new String[]{"Reduce Anxiety Naturally", "https://www.youtube.com/watch?v=MIr3RsUWrdo"});
         podcasts.add(new String[]{"Stop Overthinking", "https://www.youtube.com/watch?v=9YRjX3A_8cM"});
         podcasts.add(new String[]{"Guided Meditation for Anxiety", "https://www.youtube.com/watch?v=O-6f5wQXSu8"});

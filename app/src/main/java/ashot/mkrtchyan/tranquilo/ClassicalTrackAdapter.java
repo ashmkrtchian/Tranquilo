@@ -54,7 +54,6 @@ class ClassicalTrackAdapter
     @Override
     public int getItemCount() { return tracks.size(); }
 
-    // ── ViewHolder ─────────────────────────────────────────────────────────
     static class TrackViewHolder extends RecyclerView.ViewHolder {
         TextView    tvTitle, tvComposer, tvDuration;
         ImageView   ivMusicNote, btnPlay;

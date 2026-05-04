@@ -35,9 +35,6 @@ public class Home extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-//        else {
-//            textView.setText(user.getEmail());
-//        }
 
 
 

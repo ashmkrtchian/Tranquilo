@@ -132,7 +132,7 @@ public class ClassicalMusicActivity extends AppCompatActivity
                         }
                     }
                     String duration = formatDuration(obj.getInt("duration"));
-                    String audioUrl = obj.getString("audio"); // direct mp3 URL
+                    String audioUrl = obj.getString("audio");
 
                     //allTracks.add(new ClassicalTrack(title, artist, duration, audioUrl, "classical"));
                     allTracks.add(new ClassicalTrack(title, composer, duration, audioUrl, "classical"));

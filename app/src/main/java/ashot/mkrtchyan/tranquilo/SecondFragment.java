@@ -28,9 +28,6 @@ public class SecondFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
-//    TextView breath, podcast, schulteTable;
-//    LinearLayout music;
     CardView breath, podcast, schulteTable, music, moodTracking,poetryLabel;
 
     public SecondFragment() {

@@ -87,7 +87,7 @@ public class Ocean extends AppCompatActivity {
             public void run() {
                 while (mediaPlayer != null) {
                     try {
-                        MediaPlayer mp = mediaPlayer; // local copy
+                        MediaPlayer mp = mediaPlayer;
                         if (mp == null) break;
                         Message msg = new Message();
                         msg.what = mp.getCurrentPosition();

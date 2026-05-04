@@ -62,34 +62,31 @@ public class PoemsActivity extends AppCompatActivity {
             return;
         }
 
-        // Build custom view with two pickers: minutes and seconds
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setGravity(android.view.Gravity.CENTER);
         layout.setPadding(40, 20, 40, 20);
 
-        // Minutes picker (0 to 120)
         NumberPicker minutePicker = new NumberPicker(this);
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(120);
-        minutePicker.setValue(15); // default 15 min
+        minutePicker.setValue(15);
 
         TextView tvMin = new TextView(this);
         tvMin.setText(" min  ");
         tvMin.setTextSize(16);
-        tvMin.setTextColor(0xFF283618); // darkGreen
+        tvMin.setTextColor(0xFF283618);
 
-        // Seconds picker (0 to 59)
         NumberPicker secondPicker = new NumberPicker(this);
         secondPicker.setMinValue(0);
         secondPicker.setMaxValue(59);
         secondPicker.setValue(0);
-        secondPicker.setFormatter(value -> String.format("%02d", value)); // 01, 02...
+        secondPicker.setFormatter(value -> String.format("%02d", value));
 
         TextView tvSec = new TextView(this);
         tvSec.setText(" sec");
         tvSec.setTextSize(16);
-        tvSec.setTextColor(0xFF283618); // darkGreen
+        tvSec.setTextColor(0xFF283618);
 
         layout.addView(minutePicker);
         layout.addView(tvMin);

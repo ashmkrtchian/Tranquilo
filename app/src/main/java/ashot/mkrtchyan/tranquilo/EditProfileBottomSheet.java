@@ -128,7 +128,7 @@ public class EditProfileBottomSheet extends BottomSheetDialogFragment {
                 .update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Profile updated!", Toast.LENGTH_SHORT).show();
-                    if (listener != null) listener.onProfileUpdated();//added
+                    if (listener != null) listener.onProfileUpdated();
                     dismiss();
                 })
                 .addOnFailureListener(e ->
