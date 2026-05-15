@@ -135,6 +135,7 @@
         android:text="@string/get_started"
         android:textSize="25sp"
         android:backgroundTint="@color/darkGreen"
+        android:textColor="@color/milk"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"/>
 
