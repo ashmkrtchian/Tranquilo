@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="14dp">
 
-        <!-- Icon background circle -->
         <FrameLayout
             android:id="@+id/iconFrame"
             android:layout_width="44dp"
@@ -22,7 +21,6 @@
             android:layout_centerVertical="true"
             android:background="@drawable/bg_circle_dark">
 
-            <!-- Default music note icon -->
             <ImageView
                 android:id="@+id/ivMusicNote"
                 android:layout_width="22dp"
@@ -31,7 +29,6 @@
                 android:src="@drawable/ic_music_note"
                 app:tint="@color/lightBrown" />
 
-            <!-- Equalizer icon shown when track is playing -->
             <ImageView
                 android:id="@+id/ivPlaying"
                 android:layout_width="22dp"
@@ -41,12 +38,11 @@
                 android:visibility="gone" />
         </FrameLayout>
 
-        <!-- Title, Composer, Duration -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iconFrame"
-            android:layout_toStartOf="@id/btnPlay"
+            android:layout_toStartOf="@id/btnControls"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingStart="12dp"
@@ -79,18 +75,35 @@
                 android:layout_marginTop="1dp" />
         </LinearLayout>
 
-        <!-- Play button -->
-        <ImageView
-            android:id="@+id/btnPlay"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+        <LinearLayout
+            android:id="@+id/btnControls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bg_circle_caramel"
-            android:src="@drawable/play"
-            android:padding="8dp"
-            android:contentDescription="Play"
-            app:tint="@color/milk" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/btnFavorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_heart_outline"
+                android:contentDescription="Favorite"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/lightBrown" />
+
+            <ImageView
+                android:id="@+id/btnPlay"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_circle_caramel"
+                android:src="@drawable/play"
+                android:padding="8dp"
+                android:contentDescription="Play"
+                app:tint="@color/milk" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

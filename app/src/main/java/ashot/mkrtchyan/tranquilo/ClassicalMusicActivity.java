@@ -3,13 +3,11 @@ package ashot.mkrtchyan.tranquilo;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,25 +16,19 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ClassicalMusicActivity extends AppCompatActivity
-        implements ClassicalTrackAdapter.OnTrackClickListener {
+        implements ClassicalTrackAdapter.OnTrackClickListener,
+        ClassicalTrackAdapter.OnFavoriteClickListener {
 
-    private static final String CLIENT_ID = "096994f4";
-
-    private EditText etSearch;
     private RecyclerView rvTracks;
+    private ProgressBar progressBuffering;
     private TextView tvListLabel, tvNowPlayingTitle, tvNowPlayingComposer;
     private ImageButton btnBack;
     private ImageView btnPlayPause, btnPrev, btnNext;
@@ -46,30 +38,38 @@ public class ClassicalMusicActivity extends AppCompatActivity
     private ClassicalTrackAdapter adapter;
     private final List<ClassicalTrack> allTracks      = new ArrayList<>();
     private final List<ClassicalTrack> filteredTracks = new ArrayList<>();
+    private final List<ClassicalTrack> favoriteTracks = new ArrayList<>();
 
     private MediaPlayer mediaPlayer;
-    private int currentIndex = -1;
-    private boolean isPlaying = false;
+    private int currentIndex     = -1;
+    private boolean isPlaying      = false;
+    private boolean showingFavorites = false;
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private FirebaseFirestore db;
+    private String userId;
 
     private static final String[] CATEGORIES = {
-            "All", "Bach", "Beethoven", "Chopin", "Debussy",
-            "Mozart", "Vivaldi", "Satie", "Tchaikovsky"
+            "All", "Favorites", "Bach", "Beethoven", "Chopin",
+            "Debussy", "Mozart", "Vivaldi", "Satie", "Tchaikovsky"
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classical_music);
+
+        db     = FirebaseFirestore.getInstance();
+        userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : null;
+
         bindViews();
         setupChips();
-        setupSearch();
-        fetchTracks("");
+        fetchAllTracks();
     }
 
     private void bindViews() {
-        etSearch             = findViewById(R.id.etSearch);
+        progressBuffering    = findViewById(R.id.progressBuffering);
         rvTracks             = findViewById(R.id.rvTracks);
         cardNowPlaying       = findViewById(R.id.cardNowPlaying);
         tvNowPlayingTitle    = findViewById(R.id.tvNowPlayingTitle);
@@ -87,99 +87,111 @@ public class ClassicalMusicActivity extends AppCompatActivity
         btnNext.setOnClickListener(v -> playTrack(currentIndex + 1));
     }
 
-    private void fetchTracks(String query) {
+    private void fetchAllTracks() {
         tvListLabel.setText("Loading…");
-        executor.execute(() -> {
-            try {
-                String urlStr = "https://api.jamendo.com/v3.0/tracks/"
-                        + "?client_id=" + CLIENT_ID
-                        + "&format=json"
-                        + "&limit=30"
-                        + "&tags=classical+instrumental"
-                        + "&search=" + query.replace(" ", "+")
-                        + "&audioformat=mp32"
-                        + "&include=musicinfo"
-                        + "&order=popularity_total";
-
-                HttpURLConnection conn = (HttpURLConnection) new URL(urlStr).openConnection();
-                conn.setRequestMethod("GET");
-
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) sb.append(line);
-                reader.close();
-
-                JSONObject root    = new JSONObject(sb.toString());
-                JSONArray  results = root.getJSONArray("results");
-
-                allTracks.clear();
-                for (int i = 0; i < results.length(); i++) {
-                    JSONObject obj = results.getJSONObject(i);
-                    String title    = obj.getString("name");
-                    //String artist   = obj.getString("artist_name");
-                    String artistName = obj.getString("artist_name");
-                    String composer = "Classical";
-                    for (String cat : CATEGORIES) {
-                        if (!cat.equals("All") && artistName.toLowerCase().contains(cat.toLowerCase())) {
-                            composer = cat;
-                            break;
-                        }
-                        if (!cat.equals("All") && query.toLowerCase().contains(cat.toLowerCase())) {
-                            composer = cat;
-                            break;
-                        }
+        db.collection("classical_tracks")
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    allTracks.clear();
+                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                        allTracks.add(new ClassicalTrack(
+                                doc.getId(),
+                                doc.getString("title"),
+                                doc.getString("composer"),
+                                doc.getString("audioUrl")
+                        ));
                     }
-                    String duration = formatDuration(obj.getInt("duration"));
-                    String audioUrl = obj.getString("audio");
-
-                    //allTracks.add(new ClassicalTrack(title, artist, duration, audioUrl, "classical"));
-                    allTracks.add(new ClassicalTrack(title, composer, duration, audioUrl, "classical"));
-                }
-
-                runOnUiThread(() -> {
-                    filteredTracks.clear();
-                    filteredTracks.addAll(allTracks);
-                    if (adapter == null) {
-                        adapter = new ClassicalTrackAdapter(filteredTracks, this);
-                        rvTracks.setLayoutManager(new LinearLayoutManager(this));
-                        rvTracks.setAdapter(adapter);
+                    if (userId != null) {
+                        fetchFavoritesAndMerge(() -> showCategory("All"));
                     } else {
-                        adapter.notifyDataSetChanged();
+                        showCategory("All");
                     }
-                    tvListLabel.setText(allTracks.isEmpty() ? "No results" : "Featured Pieces");
-                });
-
-            } catch (Exception e) {
-                runOnUiThread(() -> {
+                })
+                .addOnFailureListener(e -> {
                     tvListLabel.setText("Failed to load");
-                    Toast.makeText(this, "Check internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Could not load tracks", Toast.LENGTH_SHORT).show();
                 });
-            }
-        });
     }
 
-    private String formatDuration(int seconds) {
-        return (seconds / 60) + ":" + String.format("%02d", seconds % 60);
+    private void fetchFavoritesAndMerge(Runnable onDone) {
+        db.collection("user_favorites")
+                .document(userId)
+                .collection("tracks")
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    List<String> favoriteIds = new ArrayList<>();
+                    for (DocumentSnapshot doc : snapshot.getDocuments()) {
+                        favoriteIds.add(doc.getId());
+                    }
+                    favoriteTracks.clear();
+                    for (ClassicalTrack t : allTracks) {
+                        t.isFavorite = favoriteIds.contains(t.id);
+                        if (t.isFavorite) favoriteTracks.add(t);
+                    }
+                    onDone.run();
+                })
+                .addOnFailureListener(e -> onDone.run());
     }
 
-    private void setupSearch() {
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int i, int c, int a) {}
-            @Override public void afterTextChanged(Editable s) {}
-            @Override public void onTextChanged(CharSequence s, int i, int b, int c) {
-                String q = s.toString().trim();
-                if (q.isEmpty()) {
-                    filteredTracks.clear();
-                    filteredTracks.addAll(allTracks);
-                    tvListLabel.setText("Featured Pieces");
-                    if (adapter != null) adapter.notifyDataSetChanged();
-                } else {
-                    fetchTracks(q);
-                }
+    @Override
+    public void onFavoriteClick(int position) {
+        if (userId == null) {
+            Toast.makeText(this, "Sign in to save favorites", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ClassicalTrack track = filteredTracks.get(position);
+        track.isFavorite = !track.isFavorite;
+
+        var favRef = db.collection("user_favorites")
+                .document(userId)
+                .collection("tracks")
+                .document(track.id);
+
+        if (track.isFavorite) {
+            java.util.Map<String, Object> data = new java.util.HashMap<>();
+            data.put("title",    track.title);
+            data.put("composer", track.composer);
+            favRef.set(data);
+            favoriteTracks.add(track);
+        } else {
+            favRef.delete();
+            favoriteTracks.remove(track);
+        }
+
+        adapter.notifyItemChanged(position);
+
+        if (showingFavorites) {
+            filteredTracks.remove(position);
+            adapter.notifyItemRemoved(position);
+        }
+    }
+
+    private void showCategory(String category) {
+        filteredTracks.clear();
+        showingFavorites = false;
+
+        if (category.equals("All")) {
+            filteredTracks.addAll(allTracks);
+            tvListLabel.setText("Featured Pieces");
+        } else if (category.equals("Favorites")) {
+            filteredTracks.addAll(favoriteTracks);
+            tvListLabel.setText("Your Favorites");
+            showingFavorites = true;
+        } else {
+            for (ClassicalTrack t : allTracks) {
+                if (category.equalsIgnoreCase(t.composer)) filteredTracks.add(t);
             }
-        });
+            tvListLabel.setText(category);
+        }
+
+        if (adapter == null) {
+            adapter = new ClassicalTrackAdapter(filteredTracks, this, this);
+            rvTracks.setLayoutManager(new LinearLayoutManager(this));
+            rvTracks.setAdapter(adapter);
+        } else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void setupChips() {
@@ -197,15 +209,15 @@ public class ClassicalMusicActivity extends AppCompatActivity
             chip.setOnClickListener(v -> {
                 resetChipSelection();
                 styleChip(chip, true);
-                etSearch.setText("");
-                fetchTracks(cat.equals("All") ? "classical" : cat);
+                showCategory(cat);
             });
             chipGroup.addView(chip);
         }
     }
 
     private void styleChip(TextView chip, boolean selected) {
-        chip.setBackgroundResource(selected ? R.drawable.bg_chip_selected : R.drawable.bg_chip);
+        chip.setBackgroundResource(selected
+                ? R.drawable.bg_chip_selected : R.drawable.bg_chip);
         chip.setTextColor(ContextCompat.getColor(this, R.color.milk));
     }
 
@@ -217,7 +229,11 @@ public class ClassicalMusicActivity extends AppCompatActivity
 
     @Override
     public void onTrackClick(int position) {
-        playTrack(position);
+        if (position == currentIndex) {
+            togglePlayPause();
+        } else {
+            playTrack(position);
+        }
     }
 
     public void playTrack(int index) {
@@ -229,6 +245,11 @@ public class ClassicalMusicActivity extends AppCompatActivity
         ClassicalTrack track = filteredTracks.get(currentIndex);
 
         cardNowPlaying.setVisibility(View.VISIBLE);
+        progressBuffering.setVisibility(View.GONE);
+        btnPlayPause.setVisibility(View.VISIBLE);
+        btnPrev.setVisibility(View.VISIBLE);
+        btnNext.setVisibility(View.VISIBLE);
+
         tvNowPlayingTitle.setText(track.title);
         tvNowPlayingComposer.setText(track.composer);
         isPlaying = true;
@@ -247,12 +268,25 @@ public class ClassicalMusicActivity extends AppCompatActivity
                 .build());
 
         try {
-            mediaPlayer.setDataSource(track.youtubeId);
+            mediaPlayer.setDataSource(track.audioUrl);
+            progressBuffering.setVisibility(View.VISIBLE);
+            btnPlayPause.setVisibility(View.INVISIBLE);
             mediaPlayer.prepareAsync();
-            mediaPlayer.setOnPreparedListener(mp -> mp.start());
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                progressBuffering.setVisibility(View.GONE);
+                btnPlayPause.setVisibility(View.VISIBLE);
+                btnPrev.setVisibility(View.VISIBLE);
+                btnNext.setVisibility(View.VISIBLE);
+                if (adapter != null) adapter.setPlayingIndex(currentIndex);
+                int secs = mp.getDuration() / 1000;
+                track.duration = (secs / 60) + ":" + String.format("%02d", secs % 60);
+                adapter.notifyItemChanged(currentIndex);
+            });
             mediaPlayer.setOnCompletionListener(mp -> playTrack(currentIndex + 1));
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
-                runOnUiThread(() -> Toast.makeText(this, "Could not play track", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Could not play track", Toast.LENGTH_SHORT).show());
                 return true;
             });
         } catch (Exception e) {
@@ -265,9 +299,11 @@ public class ClassicalMusicActivity extends AppCompatActivity
         if (isPlaying) {
             mediaPlayer.pause();
             btnPlayPause.setImageResource(R.drawable.play);
+            if (adapter != null) adapter.setPlayingIndex(-1);
         } else {
             mediaPlayer.start();
             btnPlayPause.setImageResource(R.drawable.stop2);
+            if (adapter != null) adapter.setPlayingIndex(currentIndex);
         }
         isPlaying = !isPlaying;
     }
@@ -279,7 +315,6 @@ public class ClassicalMusicActivity extends AppCompatActivity
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        executor.shutdown();
         super.onDestroy();
     }
 }

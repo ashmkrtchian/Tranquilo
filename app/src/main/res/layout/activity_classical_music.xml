@@ -112,81 +112,93 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="14dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:src="@drawable/ic_music_note"
-                android:scaleType="centerInside"
-                android:padding="20dp"
-                android:layout_marginBottom="12dp"
-                app:tint="@color/lightBrown" />
-
-            <TextView
-                android:id="@+id/tvNowPlayingTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/milk"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:maxLines="2"
-                android:ellipsize="end" />
-
-            <TextView
-                android:id="@+id/tvNowPlayingComposer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/lightBrown"
-                android:textSize="12sp"
-                android:layout_marginTop="2dp" />
-
-            <!-- Playback Controls -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="12dp">
+                android:orientation="vertical"
+                android:padding="14dp">
 
                 <ImageView
-                    android:id="@+id/btnPrev"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_circle_dark"
-                    android:src="@drawable/ic_skip_previous"
-                    android:contentDescription="Previous"
-                    android:padding="5dp"
-                    app:tint="@color/milk" />
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:src="@drawable/ic_music_note"
+                    android:scaleType="centerInside"
+                    android:padding="20dp"
+                    android:layout_marginBottom="12dp"
+                    app:tint="@color/lightBrown" />
 
-                <ImageView
-                    android:id="@+id/btnPlayPause"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:background="@drawable/bg_circle_caramel"
-                    android:src="@drawable/stop"
-                    android:padding="5dp"
-                    android:contentDescription="Play/Pause"
-                    app:tint="@color/milk" />
+                <TextView
+                    android:id="@+id/tvNowPlayingTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/milk"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
 
-                <ImageView
-                    android:id="@+id/btnNext"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_circle_dark"
-                    android:src="@drawable/ic_skip_next"
-                    android:padding="5dp"
-                    android:contentDescription="Next"
-                    app:tint="@color/milk" />
+                <TextView
+                    android:id="@+id/tvNowPlayingComposer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/lightBrown"
+                    android:textSize="12sp"
+                    android:layout_marginTop="2dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="12dp">
+
+                    <ImageView
+                        android:id="@+id/btnPrev"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_circle_dark"
+                        android:src="@drawable/ic_skip_previous"
+                        android:contentDescription="Previous"
+                        android:padding="5dp"
+                        app:tint="@color/milk" />
+
+                    <ImageView
+                        android:id="@+id/btnPlayPause"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_circle_caramel"
+                        android:src="@drawable/stop"
+                        android:padding="5dp"
+                        android:contentDescription="Play/Pause"
+                        app:tint="@color/milk" />
+
+                    <ImageView
+                        android:id="@+id/btnNext"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_circle_dark"
+                        android:src="@drawable/ic_skip_next"
+                        android:padding="5dp"
+                        android:contentDescription="Next"
+                        app:tint="@color/milk" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBuffering"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Section Label -->
     <TextView
         android:id="@+id/tvListLabel"
         android:layout_width="match_parent"
@@ -199,7 +211,6 @@
         android:textSize="11sp"
         android:letterSpacing="0.12" />
 
-    <!-- Track List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTracks"
         android:layout_width="match_parent"
