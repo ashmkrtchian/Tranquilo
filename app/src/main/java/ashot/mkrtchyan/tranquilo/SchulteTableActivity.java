@@ -2,6 +2,7 @@ package ashot.mkrtchyan.tranquilo;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -41,6 +42,17 @@ public class SchulteTableActivity extends AppCompatActivity {
     private static final int COLOR_LIGHT_GREEN = 0xFF606C38;
     private static final int COLOR_CARAMEL     = 0xFFBC6C25;
 
+    private static final int COLOR_HINT_YELLOW = 0xFFFFD600;
+    private static final int HINT_DELAY_MS = 3000;
+
+    private int currentHintIndex = -1;
+    private final Handler hintHandler = new Handler(Looper.getMainLooper());
+    private final Runnable hintRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (gameRunning) showHint();
+        }
+    };
     private GridLayout schulteGrid;
     private TextView   tvTimer, tvCurrentNumber, tvScore;
     private Button     btnStartPause, btnReset;
@@ -106,7 +118,67 @@ public class SchulteTableActivity extends AppCompatActivity {
     private void onStartPauseClicked() {
         if (!gameRunning) startGame();
     }
+    private void scheduleHint() {
+        hintHandler.removeCallbacks(hintRunnable);
+        hintHandler.postDelayed(hintRunnable, HINT_DELAY_MS);
+    }
 
+    private ValueAnimator hintAnimator;
+
+    private void showHint() {
+        clearHint();
+        for (int i = 0; i < TOTAL_NUMBERS; i++) {
+            if (numbers[i] == nextExpected && cells[i].isEnabled()) {
+                currentHintIndex = i;
+                CardView hintCard = cells[i];
+
+                hintAnimator = ValueAnimator.ofArgb(COLOR_MILK, 0xFFFFC300);
+                hintAnimator.setDuration(700);
+                hintAnimator.setRepeatMode(ValueAnimator.REVERSE);
+                hintAnimator.setRepeatCount(ValueAnimator.INFINITE);
+                hintAnimator.addUpdateListener(animator -> {
+                    int color = (int) animator.getAnimatedValue();
+                    hintCard.setCardBackgroundColor(color);
+                });
+                hintAnimator.start();
+                break;
+            }
+        }
+    }
+
+    private void clearHint() {
+        hintHandler.removeCallbacks(hintRunnable);
+        if (hintAnimator != null) {
+            hintAnimator.cancel();
+            hintAnimator = null;
+        }
+        if (currentHintIndex != -1) {
+            if (cells[currentHintIndex].isEnabled()) {
+                cells[currentHintIndex].setCardBackgroundColor(COLOR_MILK);
+            }
+            currentHintIndex = -1;
+        }
+    }
+    private void onCellTapped(int index, int number, CardView card, TextView tv) {
+        if (number == nextExpected) {
+            foundCount++;
+            nextExpected++;
+
+            clearHint();
+            markFound(card, tv);
+            updateScoreDisplay();
+
+            if (foundCount == TOTAL_NUMBERS) {
+                tvCurrentNumber.setText("✓");
+                onGameComplete();
+            } else {
+                tvCurrentNumber.setText(String.valueOf(nextExpected));
+                scheduleHint();
+            }
+        } else {
+            shakeCell(card);
+        }
+    }
     private void buildGrid() {
         schulteGrid.removeAllViews();
 
@@ -155,21 +227,6 @@ public class SchulteTableActivity extends AppCompatActivity {
         }
     }
 
-    private void onCellTapped(int index, int number, CardView card, TextView tv) {
-        if (number == nextExpected) {
-            foundCount++;
-            nextExpected++;
-
-            markFound(card, tv);
-            updateScoreDisplay();
-            tvCurrentNumber.setText(String.valueOf(nextExpected));
-
-            if (foundCount == TOTAL_NUMBERS) onGameComplete();
-        } else {
-            shakeCell(card);
-        }
-    }
-
     private void markFound(CardView card, TextView tv) {
         card.setCardBackgroundColor(COLOR_LIGHT_GREEN);
         tv.setTextColor(COLOR_MILK);
@@ -207,14 +264,17 @@ public class SchulteTableActivity extends AppCompatActivity {
         btnStartPause.setBackgroundTintList(
                 android.content.res.ColorStateList.valueOf(0xFF9E9E9E));
         timerHandler.postDelayed(timerRunnable, 1000);
+        scheduleHint();
     }
 
     private void resetGame() {
+        clearHint();
         timerHandler.removeCallbacks(timerRunnable);
         gameRunning    = false;
         elapsedSeconds = 0;
         nextExpected   = 1;
         foundCount     = 0;
+        currentHintIndex = -1;
 
         tvTimer.setText("00:00");
         tvCurrentNumber.setText("1");
@@ -231,6 +291,7 @@ public class SchulteTableActivity extends AppCompatActivity {
     private void onGameComplete() {
         gameRunning = false;
         timerHandler.removeCallbacks(timerRunnable);
+        clearHint();
         btnStartPause.setEnabled(false);
 
         btnStartPause.setText("Done ✓");
@@ -337,5 +398,6 @@ public class SchulteTableActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         timerHandler.removeCallbacks(timerRunnable);
+        hintHandler.removeCallbacks(hintRunnable);
     }
 }
