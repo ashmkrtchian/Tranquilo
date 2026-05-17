@@ -4,6 +4,7 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,8 @@ public class ClassicalMusicActivity extends AppCompatActivity
     private ImageView btnPlayPause, btnPrev, btnNext;
     private LinearLayout chipGroup;
     private View cardNowPlaying;
+    private EditText etSearch;
+    private String activeCategory = "All";
 
     private ClassicalTrackAdapter adapter;
     private final List<ClassicalTrack> allTracks      = new ArrayList<>();
@@ -64,11 +67,13 @@ public class ClassicalMusicActivity extends AppCompatActivity
                 : null;
 
         bindViews();
+        setupSearch();
         setupChips();
         fetchAllTracks();
     }
 
     private void bindViews() {
+        etSearch = findViewById(R.id.etSearch);
         progressBuffering    = findViewById(R.id.progressBuffering);
         rvTracks             = findViewById(R.id.rvTracks);
         cardNowPlaying       = findViewById(R.id.cardNowPlaying);
@@ -87,6 +92,48 @@ public class ClassicalMusicActivity extends AppCompatActivity
         btnNext.setOnClickListener(v -> playTrack(currentIndex + 1));
     }
 
+    private void setupSearch() {
+        etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                String query = s.toString().trim().toLowerCase();
+                filterTracks(query);
+            }
+        });
+    }
+
+    private void filterTracks(String query) {
+        filteredTracks.clear();
+
+        // Pick the base list depending on active category
+        List<ClassicalTrack> base;
+        if (activeCategory.equals("Favorites")) {
+            base = favoriteTracks;
+        } else if (activeCategory.equals("All")) {
+            base = allTracks;
+        } else {
+            base = new ArrayList<>();
+            for (ClassicalTrack t : allTracks) {
+                if (activeCategory.equalsIgnoreCase(t.composer)) base.add(t);
+            }
+        }
+
+        if (query.isEmpty()) {
+            filteredTracks.addAll(base);
+        } else {
+            for (ClassicalTrack t : base) {
+                if (t.title.toLowerCase().contains(query)
+                        || t.composer.toLowerCase().contains(query)) {
+                    filteredTracks.add(t);
+                }
+            }
+        }
+
+        if (adapter != null) adapter.notifyDataSetChanged();
+    }
     private void fetchAllTracks() {
         tvListLabel.setText("Loading…");
         db.collection("classical_tracks")
@@ -168,8 +215,10 @@ public class ClassicalMusicActivity extends AppCompatActivity
     }
 
     private void showCategory(String category) {
+        activeCategory = category; // ADD THIS LINE
         filteredTracks.clear();
         showingFavorites = false;
+        etSearch.setText(""); // clear search when switching category
 
         if (category.equals("All")) {
             filteredTracks.addAll(allTracks);
