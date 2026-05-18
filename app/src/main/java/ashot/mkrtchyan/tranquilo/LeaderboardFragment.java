@@ -84,6 +84,7 @@ public class LeaderboardFragment extends Fragment {
 
         db.collection("users")
                 .orderBy("calmCoins", Query.Direction.DESCENDING)
+                .whereGreaterThan("calmCoins", 0)
                 .limit(20)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
