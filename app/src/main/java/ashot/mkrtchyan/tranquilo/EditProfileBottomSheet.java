@@ -118,6 +118,32 @@ public class EditProfileBottomSheet extends BottomSheetDialogFragment {
             return;
         }
 
+        db.collection("users")
+                .whereEqualTo("name", name)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    boolean nameTaken = false;
+
+                    for (var doc : querySnapshot.getDocuments()) {
+                        if (!doc.getId().equals(userId)) {
+                            nameTaken = true;
+                            break;
+                        }
+                    }
+
+                    if (nameTaken) {
+                        etName.setError("This name is already taken");
+                        Toast.makeText(getContext(), "Name already in use, choose another", Toast.LENGTH_SHORT).show();
+                    } else {
+                        performSave(name);
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "Could not verify name, try again", Toast.LENGTH_SHORT).show()
+                );
+    }
+
+    private void performSave(String name) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("name", name);
         if (selectedAvatarKey != null) {

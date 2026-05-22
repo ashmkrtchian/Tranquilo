@@ -70,12 +70,21 @@ public class ThirdFragment extends Fragment {
                             if (name != null) tvName.setText(name);
 
                             String profileKey = snapshot.getString("profilePicture");
+                            imgAvatar.setImageResource(R.drawable.man);
                             if (profileKey != null) {
                                 switch (profileKey) {
-                                    case "man":   imgAvatar.setImageResource(R.drawable.man);   break;
-                                    case "woman": imgAvatar.setImageResource(R.drawable.woman); break;
-                                    case "dog":   imgAvatar.setImageResource(R.drawable.dog);   break;
-                                    case "cat":   imgAvatar.setImageResource(R.drawable.cat);   break;
+                                    case "woman":
+                                        imgAvatar.setImageResource(R.drawable.woman);
+                                        break;
+                                    case "dog":
+                                        imgAvatar.setImageResource(R.drawable.dog);
+                                        break;
+                                    case "cat":
+                                        imgAvatar.setImageResource(R.drawable.cat);
+                                        break;
+                                    default:
+                                        imgAvatar.setImageResource(R.drawable.man);
+                                        break;
                                 }
                             }
 
