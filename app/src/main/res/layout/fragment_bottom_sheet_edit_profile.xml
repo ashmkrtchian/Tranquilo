@@ -115,7 +115,8 @@
         android:textColorHint="@color/lightBrown"
         android:textSize="15sp"
         android:background="@drawable/bg_stat_card"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:maxLength="20"/>
 
     <Button
         android:id="@+id/btn_save_profile"
