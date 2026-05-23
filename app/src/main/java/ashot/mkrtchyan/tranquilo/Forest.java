@@ -40,6 +40,9 @@ public class Forest extends AppCompatActivity {
         mediaPlayer.setVolume(0.5f, 0.5f);
         totalTime = mediaPlayer.getDuration();
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
 
         seekBarPosition = findViewById(R.id.seekBarPosition);
         seekBarPosition.setMax(totalTime);

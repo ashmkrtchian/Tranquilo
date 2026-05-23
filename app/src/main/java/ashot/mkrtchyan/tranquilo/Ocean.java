@@ -1,5 +1,6 @@
 package ashot.mkrtchyan.tranquilo;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,10 @@ public class Ocean extends AppCompatActivity {
         mediaPlayer.seekTo(0);
         mediaPlayer.setVolume(0.5f, 0.5f);
         totalTime = mediaPlayer.getDuration();
+
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
 
         seekBarPosition = findViewById(R.id.seekBarPosition);
         seekBarPosition.setMax(totalTime);
