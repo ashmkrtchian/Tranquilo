@@ -43,7 +43,9 @@
         <activity
             android:name=".Podcast"
             android:exported="false" />
-        <activity android:name=".ClassicalMusicActivity" />
+        <activity
+            android:name=".ClassicalMusicActivity"
+            android:exported="false"/>
         <activity
             android:name=".Breath"
             android:exported="false" />

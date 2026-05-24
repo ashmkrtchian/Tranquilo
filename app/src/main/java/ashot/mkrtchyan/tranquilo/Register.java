@@ -32,7 +32,7 @@ public class Register extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword, editTextName;
     Button buttonReg;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ProgressBar progressBar;
     TextView textView;
     FirebaseFirestore db;
