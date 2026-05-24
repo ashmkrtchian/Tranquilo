@@ -50,6 +50,7 @@ public class ClassicalMusicActivity extends AppCompatActivity
     private int currentIndex = -1;
     private boolean isPlaying = false;
     private boolean showingFavorites = false;
+    private String currentTrackId = null;
 
     private FirebaseFirestore db;
     private String userId;
@@ -165,6 +166,14 @@ public class ClassicalMusicActivity extends AppCompatActivity
 
         if (adapter != null) {
             adapter.notifyDataSetChanged();
+            int newIndex = -1;
+            for (int i = 0; i < filteredTracks.size(); i++) {
+                if (filteredTracks.get(i).id.equals(currentTrackId)) {
+                    newIndex = i;
+                    break;
+                }
+            }
+            adapter.setPlayingIndex(newIndex);
         }
     }
 
@@ -328,6 +337,16 @@ public class ClassicalMusicActivity extends AppCompatActivity
 
             rvTracks.setAdapter(adapter);
         }
+        if (adapter != null) {
+            int newIndex = -1;
+            for (int i = 0; i < filteredTracks.size(); i++) {
+                if (filteredTracks.get(i).id.equals(currentTrackId)) {
+                    newIndex = i;
+                    break;
+                }
+            }
+            adapter.setPlayingIndex(newIndex);
+        }
     }
 
     private void setupChips() {
@@ -393,13 +412,9 @@ public class ClassicalMusicActivity extends AppCompatActivity
 
     @Override
     public void onTrackClick(int position) {
-
-        if (position == currentIndex) {
-
+        if (filteredTracks.get(position).id.equals(currentTrackId)) {
             togglePlayPause();
-
         } else {
-
             playTrack(position);
         }
     }
@@ -417,6 +432,7 @@ public class ClassicalMusicActivity extends AppCompatActivity
         }
 
         currentIndex = index;
+        currentTrackId = filteredTracks.get(currentIndex).id;
 
         ClassicalTrack track = filteredTracks.get(currentIndex);
 
