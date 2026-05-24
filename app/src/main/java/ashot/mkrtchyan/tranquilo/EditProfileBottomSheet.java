@@ -22,6 +22,15 @@ import java.util.Map;
 public class EditProfileBottomSheet extends BottomSheetDialogFragment {
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setSoftInputMode(
+                    android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+            );
+        }
+    }
     public interface OnProfileUpdatedListener {
         void onProfileUpdated();
     }
