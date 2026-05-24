@@ -36,12 +36,12 @@ public class Home extends AppCompatActivity {
             finish();
         }
 
-
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new SecondFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new SecondFragment())
+                    .commit();
+        }
 
         navHome.setOnClickListener(v -> {
             getSupportFragmentManager()
