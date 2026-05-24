@@ -543,15 +543,19 @@ public class ClassicalMusicActivity extends AppCompatActivity
             }
 
         } else {
-
-            mediaPlayer.start();
-
-            btnPlayPause.setImageResource(R.drawable.stop2);
-
-            if (adapter != null) {
-                adapter.setPlayingIndex(currentIndex);
+        mediaPlayer.start();
+        btnPlayPause.setImageResource(R.drawable.stop2);
+        if (adapter != null) {
+            int newIndex = -1;
+            for (int i = 0; i < filteredTracks.size(); i++) {
+                if (filteredTracks.get(i).id.equals(currentTrackId)) {
+                    newIndex = i;
+                    break;
+                }
             }
+            adapter.setPlayingIndex(newIndex);
         }
+    }
 
         isPlaying = !isPlaying;
     }
