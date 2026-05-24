@@ -14,6 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MoodActivity extends AppCompatActivity {
 
     private LinearLayout cardResult, cardStreak;
@@ -36,35 +44,47 @@ public class MoodActivity extends AppCompatActivity {
         tvStreakInfo   = findViewById(R.id.tv_streak_info);
         tvStreakLabel  = findViewById(R.id.tv_streak_label);
 
-        findViewById(R.id.btn_happy).setOnClickListener(v ->
-                onMoodSelected(v,
-                        "You're feeling Happy",
-                        "Great mood! Save this moment and boost your streak. Try a short breathing session to stay balanced."));
+        findViewById(R.id.btn_happy).setOnClickListener(v -> {
+            saveMood("happy");
+            onMoodSelected(v,
+                    "You're feeling Happy",
+                    "Great mood! Save this moment and boost your streak. Try a short breathing session to stay balanced.");
+        });
 
-        findViewById(R.id.btn_calm).setOnClickListener(v ->
-                onMoodSelected(v,
-                        "You're feeling Calm",
-                        "Perfect state. Start a focus session or Schulte table to use this clarity effectively."));
+        findViewById(R.id.btn_calm).setOnClickListener(v -> {
+            saveMood("calm");
+            onMoodSelected(v,
+                    "You're feeling Calm",
+                    "Perfect state. Start a focus session or Schulte table to use this clarity effectively.");
+        });
 
-        findViewById(R.id.btn_anxious).setOnClickListener(v ->
-                onMoodSelected(v,
-                        "You're feeling Anxious",
-                        "Open the breathing exercise and follow the rhythm. It will help slow your thoughts and relax."));
+        findViewById(R.id.btn_anxious).setOnClickListener(v -> {
+            saveMood("anxious");
+            onMoodSelected(v,
+                    "You're feeling Anxious",
+                    "Open the breathing exercise and follow the rhythm. It will help slow your thoughts and relax.");
+        });
 
-        findViewById(R.id.btn_sad).setOnClickListener(v ->
-                onMoodSelected(v,
-                        "You're feeling Sad",
-                        "Try calming sounds or a gentle breathing session. Give yourself a few quiet minutes."));
+        findViewById(R.id.btn_sad).setOnClickListener(v -> {
+            saveMood("sad");
+            onMoodSelected(v,
+                    "You're feeling Sad",
+                    "Try calming sounds or a gentle breathing session. Give yourself a few quiet minutes.");
+        });
 
-        findViewById(R.id.btn_tired).setOnClickListener(v ->
-                onMoodSelected(v,
-                        "You're feeling Tired",
-                        "Play ambient sounds and take a short reset. Even 5–10 minutes can recharge you."));
+        findViewById(R.id.btn_tired).setOnClickListener(v -> {
+            saveMood("tired");
+            onMoodSelected(v,
+                    "You're feeling Tired",
+                    "Play ambient sounds and take a short reset. Even 5–10 minutes can recharge you.");
+        });
 
-        findViewById(R.id.btn_focused).setOnClickListener(v ->
-                onMoodSelected(v,
-                        "You're feeling Focused",
-                        "Perfect moment to go deep. Start a Schulte session and earn CalmCoins."));
+        findViewById(R.id.btn_focused).setOnClickListener(v -> {
+            saveMood("focused");
+            onMoodSelected(v,
+                    "You're feeling Focused",
+                    "Perfect moment to go deep. Start a Schulte session and earn CalmCoins.");
+        });
     }
 
     private void onMoodSelected(View selected, String mood, String tip) {
@@ -206,5 +226,18 @@ public class MoodActivity extends AppCompatActivity {
                 .setDuration(400)
                 .setInterpolator(new OvershootInterpolator(1.5f))
                 .start();
+    }
+    private void saveMood(String mood) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("lastMood", mood);
+        data.put("lastMoodTime", System.currentTimeMillis());
+
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .set(data, SetOptions.merge());
     }
 }

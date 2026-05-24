@@ -3,6 +3,7 @@ package ashot.mkrtchyan.tranquilo;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -10,95 +11,149 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Podcast extends AppCompatActivity {
 
-    ArrayList<String[]> podcasts = new ArrayList<>();
+    private static final String TAG = "Podcast";
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    String mood = "";
+    TextView tvMoodTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_podcast);
 
-        LinearLayout container = findViewById(R.id.podcastContainer);
-        TextView tvSuggested = findViewById(R.id.tvSuggested);
-        CardView cardSuggested = findViewById(R.id.cardSuggested);
-        podcasts.add(new String[]{"Reduce Anxiety Naturally",        "https://www.youtube.com/watch?v=MIr3RsUWrdo"});
-        podcasts.add(new String[]{"Stop Overthinking",               "https://www.youtube.com/watch?v=9YRjX3A_8cM"});
-        podcasts.add(new String[]{"Guided Meditation for Anxiety",   "https://www.youtube.com/watch?v=O-6f5wQXSu8"});
-        podcasts.add(new String[]{"Calm Your Mind",                  "https://www.youtube.com/watch?v=ZToicYcHIOU"});
-        podcasts.add(new String[]{"Breathing Exercise for Stress",   "https://www.youtube.com/watch?v=SEfs5TJZ6Nk"});
-        podcasts.add(new String[]{"How to Handle Anxiety",           "https://www.youtube.com/watch?v=WWloIAQpMcQ"});
-        podcasts.add(new String[]{"Sleep Meditation for Anxiety",    "https://www.youtube.com/watch?v=1vx8iUvfyCY"});
-        podcasts.add(new String[]{"Relaxation Talk",                 "https://www.youtube.com/watch?v=inpok4MKVLM"});
-        podcasts.add(new String[]{"Morning Calm Podcast",            "https://www.youtube.com/watch?v=UfcAVejslrU"});
-        podcasts.add(new String[]{"Let Go of Stress",                "https://www.youtube.com/watch?v=xRxT9cOKiM8"});
-        podcasts.add(new String[]{"Anxiety Relief Talk",             "https://www.youtube.com/watch?v=5zhnLG3GW-8"});
-        podcasts.add(new String[]{"Mindfulness Meditation",          "https://www.youtube.com/watch?v=6p_yaNFSYao"});
-        podcasts.add(new String[]{"Healing Anxiety Podcast",         "https://www.youtube.com/watch?v=2Z9bZ8vO0jM"});
-        podcasts.add(new String[]{"Deep Relaxation",                 "https://www.youtube.com/watch?v=odADwWzHR24"});
-        podcasts.add(new String[]{"Calm Breathing Guide",            "https://www.youtube.com/watch?v=nmFUDkj1Aq0"});
-        podcasts.add(new String[]{"Stress Management Tips",          "https://www.youtube.com/watch?v=hnpQrMqDoqE"});
-        podcasts.add(new String[]{"Reduce Panic Attacks",            "https://www.youtube.com/watch?v=MFxlK1ZvOmA"});
-        podcasts.add(new String[]{"Mental Health Talk",              "https://www.youtube.com/watch?v=DxIDKZHW3-E"});
-        podcasts.add(new String[]{"Relaxing Voice Podcast",          "https://www.youtube.com/watch?v=4EaMJOo1jks"});
-        podcasts.add(new String[]{"Overcome Anxiety Fast",           "https://www.youtube.com/watch?v=EU5A2k7dR4c"});
-        podcasts.add(new String[]{"Inner Peace Session",             "https://www.youtube.com/watch?v=Z7oYJZg9nOA"});
-        podcasts.add(new String[]{"Calm Thoughts Podcast",           "https://www.youtube.com/watch?v=9qR7uwkblbs"});
-        podcasts.add(new String[]{"Anxiety & Overthinking Relief",   "https://www.youtube.com/watch?v=QnHgPgB45MQ"});
-        podcasts.add(new String[]{"Total Body Stress Release",       "https://www.youtube.com/watch?v=H_uc-uQ3Nkc"});
-        podcasts.add(new String[]{"Meditation for Beginners",        "https://www.youtube.com/watch?v=4OV4REpHKqw"});
-        podcasts.add(new String[]{"Ease Worry & Overthinking",       "https://www.youtube.com/watch?v=xoYnqvadurg"});
-        podcasts.add(new String[]{"Headspace: Stress & Anxiety",     "https://www.youtube.com/watch?v=tuPW7oOudVc"});
-        podcasts.add(new String[]{"Meditation for Fear & Anxiety",   "https://www.youtube.com/watch?v=s41tJnY7ZbM"});
-        podcasts.add(new String[]{"Deep Relaxation & Stress Relief", "https://www.youtube.com/watch?v=g3tQDV0f3V8"});
-        podcasts.add(new String[]{"Calm & Ease with Adriene",        "https://www.youtube.com/watch?v=xqIso01-VMM"});
-        podcasts.add(new String[]{"Michael Sealey: Anxiety Relief",  "https://www.youtube.com/watch?v=1ZYbU82GVz4"});
-        podcasts.add(new String[]{"RAIN: Working With Anxiety",      "https://www.youtube.com/watch?v=KHQdmSU9QZU"});
+        tvMoodTitle = findViewById(R.id.tvMoodTitle);
 
-        Random random = new Random();
-        int index = random.nextInt(podcasts.size());
-
-        String[] suggested = podcasts.get(index);
-        tvSuggested.setText(suggested[0]);
-
-        cardSuggested.setOnClickListener(v -> {
-            openLink(suggested[1]);
-        });
-
-        for (String[] podcast : podcasts) {
-
-            CardView card = new CardView(this);
-            card.setRadius(22f);
-            card.setCardElevation(6f);
-            card.setCardBackgroundColor(getResources().getColor(R.color.milk));
-            card.setUseCompatPadding(true);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(0, 0, 0, 16);
-            card.setLayoutParams(params);
-
-            TextView tv = new TextView(this);
-            tv.setText(podcast[0]);
-            tv.setTextSize(16f);
-            tv.setTextColor(getResources().getColor(R.color.darkGreen));
-            tv.setPadding(32, 28, 32, 28);
-
-            card.addView(tv);
-
-            card.setOnClickListener(v -> openLink(podcast[1]));
-
-            container.addView(card);
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            tvMoodTitle.setText("Please log in to see podcasts.");
+            Log.e(TAG, "No authenticated user found.");
+            return;
         }
+
+        loadMood(currentUser.getUid());
+    }
+
+    private void loadMood(String uid) {
+        db.collection("users").document(uid).get()
+                .addOnSuccessListener(doc -> {
+                    String raw = doc.getString("lastMood");
+                    mood = (raw != null) ? raw.toLowerCase().trim() : "calm";
+                    tvMoodTitle.setText("Podcasts for your current mood: " + mood);
+                    loadSuggestedPodcasts();
+                    loadAllPodcasts();
+                })
+                .addOnFailureListener(e -> {
+                    tvMoodTitle.setText("Could not load your mood.");
+                    Log.e(TAG, "Failed to fetch user mood", e);
+                });
+    }
+
+    private void loadSuggestedPodcasts() {
+        CardView cardSuggested = findViewById(R.id.cardSuggested);
+        TextView tvSuggested = findViewById(R.id.tvSuggested);
+
+        db.collection("podcasts").whereEqualTo("mood", mood).get()
+                .addOnSuccessListener(q -> {
+                    if (q.isEmpty()) {
+                        cardSuggested.setVisibility(View.GONE);
+                        TextView tvNoPodcasts = findViewById(R.id.tvNoPodcasts);
+                        if (tvNoPodcasts != null) tvNoPodcasts.setVisibility(View.VISIBLE);
+                        return;
+                    }
+
+                    int randomIndex = new Random().nextInt(q.size());
+                    QueryDocumentSnapshot first = (QueryDocumentSnapshot) q.getDocuments().get(randomIndex);
+                    String title = first.getString("title");
+                    String url = first.getString("url");
+
+                    if (title != null && url != null) {
+                        tvSuggested.setText(title);
+                        cardSuggested.setOnClickListener(v -> openLink(url));
+                        cardSuggested.setVisibility(View.VISIBLE);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to fetch suggested podcast", e);
+                    cardSuggested.setVisibility(View.GONE);
+                });
+    }
+
+    private void loadAllPodcasts() {
+        CardView cardFeatured = findViewById(R.id.cardFeatured);
+        TextView tvFeatured = findViewById(R.id.tvFeatured);
+        LinearLayout container = findViewById(R.id.podcastContainer);
+
+        db.collection("podcasts").get()
+                .addOnSuccessListener(q -> {
+                    if (q.isEmpty()) return;
+
+                    List<QueryDocumentSnapshot> all = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : q) {
+                        if (doc.getString("title") != null && doc.getString("url") != null) {
+                            all.add(doc);
+                        }
+                    }
+
+                    if (all.isEmpty()) return;
+
+                    int randomIndex = new Random().nextInt(all.size());
+                    QueryDocumentSnapshot featured = all.get(randomIndex);
+                    String featuredTitle = featured.getString("title");
+                    String featuredUrl = featured.getString("url");
+
+                    tvFeatured.setText(featuredTitle);
+                    cardFeatured.setOnClickListener(v -> openLink(featuredUrl));
+                    cardFeatured.setVisibility(View.VISIBLE);
+
+                    container.removeAllViews();
+                    for (QueryDocumentSnapshot doc : all) {
+                        addCard(container, doc.getString("title"), doc.getString("url"));
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to fetch all podcasts", e);
+                    cardFeatured.setVisibility(View.GONE);
+                });
+    }
+
+    private void addCard(LinearLayout container, String title, String url) {
+        CardView card = new CardView(this);
+        card.setRadius(22f);
+        card.setCardElevation(6f);
+        card.setUseCompatPadding(true);
+        card.setCardBackgroundColor(getResources().getColor(R.color.milk));
+
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        p.setMargins(0, 0, 0, 16);
+        card.setLayoutParams(p);
+
+        TextView tv = new TextView(this);
+        tv.setText(title);
+        tv.setTextSize(16f);
+        tv.setTextColor(getResources().getColor(R.color.darkGreen));
+        tv.setPadding(32, 28, 32, 28);
+        card.addView(tv);
+
+        card.setOnClickListener(v -> openLink(url));
+        container.addView(card);
     }
 
     void openLink(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(intent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 }
