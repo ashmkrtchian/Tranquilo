@@ -74,7 +74,7 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
             } else {
                 currentPlayer.start();
                 holder.btnPlayPause.setImageResource(android.R.drawable.ic_media_pause);
-                updateSeekBar(holder, currentPlayer);
+                updateSeekBar(index, currentPlayer);
             }
             return;
         }
@@ -107,7 +107,7 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
                 holder.seekBar.setMax(mp.getDuration());
                 holder.tvDuration.setText(formatDuration(mp.getDuration()));
                 holder.btnPlayPause.setImageResource(android.R.drawable.ic_media_pause);
-                updateSeekBar(holder, mp);
+                updateSeekBar(index, mp);
             });
 
             player.setOnCompletionListener(mp -> {
@@ -162,16 +162,23 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
         currentPlayingIndex = -1;
     }
 
-    private void updateSeekBar(PoemViewHolder holder, MediaPlayer player) {
+    private void updateSeekBar(int index, MediaPlayer player) {
         if (player == null || player != currentPlayer) return;
-        try {
-            if (player.isPlaying()) {
-                holder.seekBar.setProgress(player.getCurrentPosition());
+
+        if (recyclerView != null) {
+            PoemViewHolder holder = (PoemViewHolder)
+                    recyclerView.findViewHolderForAdapterPosition(index);
+            if (holder != null) {
+                try {
+                    if (player.isPlaying()) {
+                        holder.seekBar.setProgress(player.getCurrentPosition());
+                    }
+                } catch (IllegalStateException ignored) {
+                    return;
+                }
             }
-        } catch (IllegalStateException ignored) {
-            return;
         }
-        handler.postDelayed(() -> updateSeekBar(holder, player), 500);
+        handler.postDelayed(() -> updateSeekBar(index, player), 500);
     }
 
     private String formatDuration(int ms) {
