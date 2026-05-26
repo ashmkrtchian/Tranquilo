@@ -55,9 +55,32 @@ public class PoemAdapter extends RecyclerView.Adapter<PoemAdapter.PoemViewHolder
         Poem poem = poems.get(position);
         holder.tvTitle.setText(poem.getTitle());
         holder.tvAuthor.setText("— " + poem.getAuthor());
-        holder.seekBar.setProgress(0);
-        holder.tvDuration.setText("0:00");
-        holder.btnPlayPause.setImageResource(android.R.drawable.ic_media_play);
+
+        if (position == currentPlayingIndex && currentPlayer != null) {
+            holder.seekBar.setMax(currentPlayer.getDuration());
+            holder.seekBar.setProgress(currentPlayer.getCurrentPosition());
+            holder.tvDuration.setText(formatDuration(currentPlayer.getDuration()));
+            holder.btnPlayPause.setImageResource(
+                    currentPlayer.isPlaying()
+                            ? android.R.drawable.ic_media_pause
+                            : android.R.drawable.ic_media_play
+            );
+            currentPlayBtn = holder.btnPlayPause;
+
+            holder.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser && currentPlayer != null) currentPlayer.seekTo(progress);
+                }
+                @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+                @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        } else {
+            holder.seekBar.setProgress(0);
+            holder.tvDuration.setText("0:00");
+            holder.btnPlayPause.setImageResource(android.R.drawable.ic_media_play);
+            holder.seekBar.setOnSeekBarChangeListener(null);
+        }
 
         holder.btnPlayPause.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
