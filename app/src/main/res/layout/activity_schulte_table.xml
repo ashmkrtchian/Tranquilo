@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,7 +52,6 @@
 
     </LinearLayout>
 
-    <!-- Stats Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +59,6 @@
         android:layout_marginBottom="16dp"
         android:weightSum="3">
 
-        <!-- Timer -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -90,7 +87,6 @@
                 android:textColor="#DDA15E" />
         </LinearLayout>
 
-        <!-- Current Number to Find -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,7 +115,6 @@
                 android:textColor="#FEFAE0" />
         </LinearLayout>
 
-        <!-- Score / Progress -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -150,7 +145,6 @@
 
     </LinearLayout>
 
-    <!-- Schulte Grid -->
     <GridLayout
         android:id="@+id/schulteGrid"
         android:layout_width="match_parent"
@@ -161,7 +155,6 @@
         android:useDefaultMargins="false"
         android:layout_marginBottom="16dp" />
 
-    <!-- Bottom Controls -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

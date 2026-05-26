@@ -13,6 +13,17 @@
     android:background="@color/milk"
     android:padding="10dp"
     android:gravity="center">
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_arrow_back"
+        android:layout_gravity="start"
+        android:background="@drawable/bg_circle_dark_green"
+        android:contentDescription="Back"
+        app:tint="@color/milk" />
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="180dp"

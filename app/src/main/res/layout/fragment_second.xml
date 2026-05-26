@@ -348,7 +348,7 @@
                             android:id="@+id/breathLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Breath"
+                            android:text="Breathe"
                             android:textSize="17sp"
                             android:textColor="@color/milk"
                             android:textStyle="bold"

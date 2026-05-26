@@ -402,32 +402,6 @@
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#15283618" />
 
-            <!--
-            <LinearLayout
-                android:id="@+id/rowPrivacy"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/insurance"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="14dp"
-                    android:text="Privacy"
-                    android:textColor="@color/darkGreen"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#15283618" />
-            -->
             <LinearLayout
                 android:id="@+id/rowLogout"
                 android:layout_width="match_parent"

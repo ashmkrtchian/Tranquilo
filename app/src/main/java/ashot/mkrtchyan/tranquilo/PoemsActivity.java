@@ -35,6 +35,10 @@ public class PoemsActivity extends AppCompatActivity {
             if (adapter != null) adapter.setAutoPlayEnabled(isChecked);
         });
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
+
         tvTimerLabel = findViewById(R.id.tvTimerLabel);
         findViewById(R.id.btnTimer).setOnClickListener(v -> showTimerDialog());
 

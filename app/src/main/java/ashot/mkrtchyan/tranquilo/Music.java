@@ -29,6 +29,9 @@ public class Music extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
 
         oceanCard = findViewById(R.id.oceanCard);
         oceanCard.setOnClickListener(new View.OnClickListener() {

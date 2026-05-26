@@ -109,7 +109,6 @@
                 android:textSize="12sp"
                 android:layout_marginTop="2dp" />
 
-            <!-- Podium block -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -118,7 +117,6 @@
                 android:alpha="0.85" />
         </LinearLayout>
 
-        <!-- 1st Place -->
         <LinearLayout
             android:id="@+id/podium1"
             android:layout_width="0dp"

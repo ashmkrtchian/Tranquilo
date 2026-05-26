@@ -2,19 +2,29 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/milk"
     android:fillViewport="true"
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:paddingHorizontal="28dp"
-        android:paddingTop="40dp"
+        android:paddingTop="20dp"
         android:paddingBottom="40dp">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@drawable/bg_circle_light_green"
+            android:contentDescription="Back"
+            android:layout_gravity="start"
+            app:tint="@color/milk" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -267,7 +277,7 @@
                 android:id="@+id/tv_mood_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/lightBrown"
+                android:textColor="@color/milk"
                 android:textSize="13sp"
                 android:gravity="center"
                 android:layout_marginTop="10dp"

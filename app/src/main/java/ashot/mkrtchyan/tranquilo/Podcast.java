@@ -43,6 +43,10 @@ public class Podcast extends AppCompatActivity {
             return;
         }
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
+
         loadMood(currentUser.getUid());
     }
 

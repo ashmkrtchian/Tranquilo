@@ -44,46 +44,50 @@ public class MoodActivity extends AppCompatActivity {
         tvStreakInfo   = findViewById(R.id.tv_streak_info);
         tvStreakLabel  = findViewById(R.id.tv_streak_label);
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
+
         findViewById(R.id.btn_happy).setOnClickListener(v -> {
             saveMood("happy");
             onMoodSelected(v,
-                    "You're feeling Happy",
-                    "Great mood! Save this moment and boost your streak. Try a short breathing session to stay balanced.");
+                    "You're feeling Happy 😊",
+                    "That's wonderful! Ride this positive energy — a quick breathing session can help you hold onto it even longer.");
         });
 
         findViewById(R.id.btn_calm).setOnClickListener(v -> {
             saveMood("calm");
             onMoodSelected(v,
-                    "You're feeling Calm",
-                    "Perfect state. Start a focus session or Schulte table to use this clarity effectively.");
+                    "You're feeling Calm 🌿",
+                    "Hold onto this feeling. Try a Schulte session to sharpen your focus, or let the ambient sounds wrap around you and deepen your peace.");
         });
 
         findViewById(R.id.btn_anxious).setOnClickListener(v -> {
             saveMood("anxious");
             onMoodSelected(v,
-                    "You're feeling Anxious",
-                    "Open the breathing exercise and follow the rhythm. It will help slow your thoughts and relax.");
+                    "You're feeling Anxious 💙",
+                    "It's okay — you're not alone in this. Head to the breathing exercise and let each breath gently bring you back to yourself.");
         });
 
         findViewById(R.id.btn_sad).setOnClickListener(v -> {
             saveMood("sad");
             onMoodSelected(v,
-                    "You're feeling Sad",
-                    "Try calming sounds or a gentle breathing session. Give yourself a few quiet minutes.");
+                    "You're feeling Sad 🤍",
+                    "Be gentle with yourself right now. Some soft ambient sounds or a slow breathing session might offer a little comfort.");
         });
 
         findViewById(R.id.btn_tired).setOnClickListener(v -> {
             saveMood("tired");
             onMoodSelected(v,
-                    "You're feeling Tired",
-                    "Play ambient sounds and take a short reset. Even 5–10 minutes can recharge you.");
+                    "You're feeling Tired 🌙",
+                    "Your body is asking for rest — listen to it. Try the 4-7-8 breathing technique or drift off with some calming soundscapes.");
         });
 
         findViewById(R.id.btn_focused).setOnClickListener(v -> {
             saveMood("focused");
             onMoodSelected(v,
-                    "You're feeling Focused",
-                    "Perfect moment to go deep. Start a Schulte session and earn CalmCoins.");
+                    "You're feeling Focused ✨",
+                    "You're in your element! Make the most of it with a Schulte session and collect some well-earned CalmCoins.");
         });
     }
 

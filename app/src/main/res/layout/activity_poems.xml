@@ -2,12 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingTop="20dp"
     android:orientation="vertical"
     android:background="@color/milk"
     android:fitsSystemWindows="true">
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_arrow_back"
+        android:background="@drawable/bg_circle_light_green"
+        android:contentDescription="Back"
+        android:layout_gravity="start"
+        app:tint="@color/milk"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"/>
 
-    <!-- Header row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +39,6 @@
             android:textColor="@color/darkGreen"
             android:fontFamily="serif"/>
 
-        <!-- Timer button -->
         <LinearLayout
             android:id="@+id/btnTimer"
             android:layout_width="wrap_content"
@@ -56,7 +66,6 @@
                 android:fontFamily="serif"/>
         </LinearLayout>
 
-        <!-- Autoplay toggle -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

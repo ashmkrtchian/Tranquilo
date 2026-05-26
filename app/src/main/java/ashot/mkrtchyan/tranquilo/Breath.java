@@ -85,6 +85,10 @@ public class Breath extends AppCompatActivity {
         initSoundMixer();
         initTechniqueCards();
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
+
         quoteText.setText(quotes[(int)(Math.random() * quotes.length)]);
         selectTechnique(Technique.BOX);
 
