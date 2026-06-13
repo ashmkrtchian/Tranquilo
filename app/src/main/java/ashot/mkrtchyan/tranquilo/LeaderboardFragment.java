@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,6 +35,11 @@ public class LeaderboardFragment extends Fragment {
     private ImageView avatar1, avatar2, avatar3;
     private TextView name1, name2, name3;
     private TextView coins1, coins2, coins3;
+
+    // "You" bar
+    private LinearLayout currentUserBar;
+    private TextView tvMyRank, tvMyName, tvMyCoins;
+    private ImageView ivMyAvatar;
 
     private FirebaseFirestore db;
 
@@ -71,6 +79,12 @@ public class LeaderboardFragment extends Fragment {
         coins1 = view.findViewById(R.id.coins1);
         coins2 = view.findViewById(R.id.coins2);
         coins3 = view.findViewById(R.id.coins3);
+
+        currentUserBar = view.findViewById(R.id.currentUserBar);
+        tvMyRank       = view.findViewById(R.id.tvMyRank);
+        tvMyName       = view.findViewById(R.id.tvMyName);
+        tvMyCoins      = view.findViewById(R.id.tvMyCoins);
+        ivMyAvatar     = view.findViewById(R.id.ivMyAvatar);
     }
 
     private void setupRecyclerView() {
@@ -95,8 +109,8 @@ public class LeaderboardFragment extends Fragment {
 
                     int rank = 1;
                     for (QueryDocumentSnapshot doc : querySnapshot) {
-                        String name      = doc.getString("name") != null ? doc.getString("name") : "Anonymous";
-                        long   calmCoins = doc.getLong("calmCoins") != null ? doc.getLong("calmCoins") : 0;
+                        String name       = doc.getString("name") != null ? doc.getString("name") : "Anonymous";
+                        long   calmCoins  = doc.getLong("calmCoins") != null ? doc.getLong("calmCoins") : 0;
                         String profileKey = doc.getString("profilePicture");
 
                         userList.add(new LeaderboardUser(doc.getId(), name, calmCoins, profileKey, rank));
@@ -104,6 +118,7 @@ public class LeaderboardFragment extends Fragment {
                     }
 
                     bindPodium();
+                    bindCurrentUserBar();
 
                     List<LeaderboardUser> restList = userList.size() > 3
                             ? userList.subList(3, userList.size())
@@ -133,9 +148,59 @@ public class LeaderboardFragment extends Fragment {
         switch (key != null ? key : "") {
             case "woman": drawableRes = R.drawable.woman; break;
             case "cat":   drawableRes = R.drawable.cat;   break;
-            case "dog":  drawableRes = R.drawable.dog;  break;
-            default:       drawableRes = R.drawable.man;   break;
+            case "dog":   drawableRes = R.drawable.dog;   break;
+            default:      drawableRes = R.drawable.man;    break;
         }
         avatarView.setImageResource(drawableRes);
+    }
+
+    private void bindCurrentUserBar() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) return;
+
+        String currentUid = firebaseUser.getUid();
+
+        // Find current user in the top-20 list
+        for (LeaderboardUser user : userList) {
+            if (user.getUid().equals(currentUid)) {
+                showUserBar(user);
+                return;
+            }
+        }
+
+        // Not in top 20 — fetch their own doc to show rank as "20+"
+        db.collection("users").document(currentUid).get()
+                .addOnSuccessListener(doc -> {
+                    if (!isAdded() || !doc.exists()) return;
+                    String name      = doc.getString("name") != null ? doc.getString("name") : "You";
+                    long   calmCoins = doc.getLong("calmCoins") != null ? doc.getLong("calmCoins") : 0;
+                    String key       = doc.getString("profilePicture");
+
+                    LeaderboardUser me = new LeaderboardUser(currentUid, name, calmCoins, key, -1);
+                    showUserBar(me);
+                });
+    }
+
+    private void showUserBar(LeaderboardUser user) {
+        currentUserBar.setVisibility(View.VISIBLE);
+
+        tvMyName.setText(user.getName());
+        tvMyCoins.setText(String.valueOf(user.getCalmCoins()));
+
+        if (user.getRank() == -1) {
+            tvMyRank.setText("20+");
+        } else {
+            tvMyRank.setText(String.valueOf(user.getRank()));
+        }
+
+        String key = user.getAvatarUrl();
+        int drawableRes;
+        switch (key != null ? key : "") {
+            case "woman": drawableRes = R.drawable.woman; break;
+            case "cat":   drawableRes = R.drawable.cat;   break;
+            case "dog":   drawableRes = R.drawable.dog;   break;
+            default:      drawableRes = R.drawable.man;    break;
+        }
+        ivMyAvatar.setImageResource(drawableRes);
     }
 }
