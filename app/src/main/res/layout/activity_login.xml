@@ -108,15 +108,6 @@
         android:layout_marginBottom="4dp"
         android:letterSpacing="0.05"
         android:text="@string/login"/>
-    <Button
-        android:id="@+id/btn_test_user"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Login as Test User"
-        android:textSize="16sp"
-        android:textColor="@color/darkGreen"
-        android:backgroundTint="@color/lightBrown"
-        android:layout_marginTop="8dp"/>
 
     <View
         android:layout_width="match_parent"

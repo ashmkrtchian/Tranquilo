@@ -68,15 +68,6 @@ public class SecondFragment extends Fragment {
             }
         });
 
-        poetryLabel = view.findViewById(R.id.poetryLabel);
-        poetryLabel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), PoemsActivity.class);
-                startActivity(i);
-            }
-        });
-
         return view;
     }
 }
